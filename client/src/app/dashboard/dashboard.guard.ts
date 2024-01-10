@@ -1,14 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  ActivatedRouteSnapshot,
-  CanActivate,
-  CanActivateChild,
-  CanLoad,
-  CanMatch,
-  Router,
-  RouterStateSnapshot,
-  UrlTree,
-} from '@angular/router';
+import { ActivatedRouteSnapshot, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable, catchError, filter, map, of } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import UniCookieService from '../services/unicookie.service';
@@ -17,7 +8,7 @@ import { UserService } from '../services/user.service';
 @Injectable({
   providedIn: 'root',
 })
-export class DashboardGuard implements CanActivate, CanActivateChild {
+export class DashboardGuard  {
   constructor(
     private router: Router,
     private user: UserService,

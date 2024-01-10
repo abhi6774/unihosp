@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, CanLoad, Route, Router, RouterStateSnapshot, UrlSegment, UrlTree } from '@angular/router';
+import { ActivatedRouteSnapshot, Route, Router, RouterStateSnapshot, UrlSegment, UrlTree } from '@angular/router';
 import { Observable, filter, map } from 'rxjs';
 import { UserService } from '../services/user.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class CreaterpofileGuard implements CanActivate, CanLoad {
+export class CreaterpofileGuard  {
 
   constructor(private router: Router, private user: UserService) { }
 

@@ -1,15 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  ActivatedRouteSnapshot,
-  CanActivate,
-  CanActivateChild,
-  CanLoad,
-  Route,
-  Router,
-  RouterStateSnapshot,
-  UrlSegment,
-  UrlTree,
-} from '@angular/router';
+import { ActivatedRouteSnapshot, Route, Router, RouterStateSnapshot, UrlSegment, UrlTree } from '@angular/router';
 import { Observable, filter, map } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import UniCookieService from 'src/app/services/unicookie.service';
@@ -18,7 +8,7 @@ import { UserService } from 'src/app/services/user.service';
 @Injectable({
   providedIn: 'root',
 })
-export class LoggedInGuard implements CanActivate, CanLoad {
+export class LoggedInGuard  {
   constructor(
     private router: Router,
     private user: UserService,

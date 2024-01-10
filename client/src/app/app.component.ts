@@ -1,13 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { CUSTOM_ELEMENTS_SCHEMA, Component, OnInit } from "@angular/core";
 
+import { CommonModule } from "@angular/common";
+import { Router, RouterOutlet } from "@angular/router";
 import { NotificationService } from './notification/notification.service';
 import { UserService } from './services/user.service';
 
 @Component({
   selector: 'uni-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
 
