@@ -14,7 +14,7 @@ import { CronModule } from './cron/cron.module';
 import { PrismaService } from './database/prisma.service';
 import { DoctorController } from './doctor/doctor.controller';
 import { DoctorService } from './doctor/service/doctor.service';
-import { DevelopmentGuard } from './guards/development.guards';
+import { DevelopmentGuard } from './guards/development.guard';
 import { HospitalGuard } from './hospital/guard/hospital.guard';
 import { HospitalController } from './hospital/hospital.controller';
 import { HospitalService } from './hospital/services/hospital.service';
@@ -28,6 +28,8 @@ import { ChatService } from './socketServices/chatting/service/chat.service';
 import { NotifierGateway } from './socketServices/notifier/notifier.gateway';
 import { NotifierService } from './socketServices/notifier/service/notifier.service';
 import { UserService } from './user/user.service';
+
+
 
 
 @Module({

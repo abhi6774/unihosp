@@ -14,16 +14,13 @@ import UniCookieService from './services/unicookie.service';
 @Injectable()
 export class RequestsInterceptor implements HttpInterceptor {
 
-  private readonly rootEndPoint = `https://unihosp.live/api/v1`;
+  private readonly rootEndPoint = `http://localhost:3000/api/v1`;
 
   constructor(private unicookieService: UniCookieService, private router: Router) { }
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    let accessToken = this.unicookieService.getAccessToken();
-    // if (!accessToken) { this.router.navigate(['/auth/login']); }
     const newRequest = request.clone({
       url: `${this.rootEndPoint}${request.url}`,
-      headers: accessToken ? new HttpHeaders({ 'authorization': `UNIHOSP ${accessToken}` }) : undefined
     })
     return next.handle(newRequest);
   }

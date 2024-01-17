@@ -29,46 +29,48 @@ export class AuthService {
   async login(authData: { email: string, password: string }) {
 
     let user = await this.userService.user({ email: authData.email }, { patient: true });
-
+    this.logger.log("Here")
     this.logger.log(JSON.stringify(user))
     authData.password = this.hash(authData.password)
 
-    if (user) {
-      if (user.password === authData.password) {
-        let patientId: string;
-        if (user.patient)
-          patientId = user.patient.id;
-        const after = excludePassword(user, ['password', 'patient'])
-        this.logger.log(JSON.stringify(after))
-        let nUser = {
-          ...after,
-          patient: patientId
-        }
-        const accessToken = this.generateToken(nUser);
-        const refreshToken = this.generateToken(nUser, TokenType.RefreshToken);
-        const refreshTokenSaved = await this.userService.usersAddAuthToken(user.id, refreshToken);
-        return {
-          accessToken,
-          refreshToken,
-          refreshTokenId: refreshTokenSaved.id,
-          message: "Authentication has been done successfully",
-          user: nUser
-        }
-      } {
-        return {
-          message: 'Authentication Failed',
-          description: "Wrong Username or Password"
-        }
+    if (!user) return { message: "Authentication Failed", description: 'User doesn\'t exists' }
+
+    if (user.password !== authData.password) {
+      return {
+        message: 'Authentication Failed',
+        description: "Wrong Username or Password"
       }
-    } else {
-      return { message: "Authentication Failed", description: 'User doesn\'t exists' }
+    }
+
+    let patientId: string;
+
+    if (user.patient)
+      patientId = user.patient.id;
+
+    const after = excludePassword(user, ['password', 'patient'])
+    this.logger.log(JSON.stringify(after))
+
+    let nUser = {
+      ...after,
+      patient: patientId
+    }
+    const accessToken = this.generateToken(nUser);
+    const refreshToken = this.generateToken(nUser, TokenType.RefreshToken);
+    const refreshTokenSaved = await this.userService.usersAddAuthToken(user.id, refreshToken);
+    return {
+      accessToken,
+      refreshToken,
+      refreshTokenId: refreshTokenSaved.id,
+      message: "Authentication has been done successfully",
+      user: nUser
     }
   }
 
 
 
   async generateFromToken(authorization: string) {
-    const receivedToken = this.splitAuthToken(authorization);
+    // const receivedToken = this.splitAuthToken(authorization);
+    const receivedToken = authorization;
     const user = this.jwtService.verify(receivedToken);
 
     const userId = user.id;
@@ -105,7 +107,7 @@ export class AuthService {
     this.logger.debug(`Signing Up: ${JSON.stringify(signUpData)}`);
 
     try {
-      if (!/^(\+\d{1,2})-(\d{10})$/.test(signUpData.contact)) {
+      if (!/^\d{10}$/.test(signUpData.contact)) {
         return {
           statusCode: 403,
           message: 'Wrong Contact details',
@@ -117,25 +119,27 @@ export class AuthService {
         signUpData.contact,
       );
 
-      const response = await this.mailService.sendMail(
-        signUpData.email,
-        signUpData.email,
-        id.uri,
-        id.code,
-      );
+      // const response = await this.mailService.sendMail(
+      //   signUpData.email,
+      //   signUpData.email,
+      //   id.uri,
+      //   id.code,
+      // );
+      //
+      // if (signUpData.contact) {
+      // const message = await this.msgService.sendMessage(
+      //   signUpData.contact,
+      //   id.code,
+      // );
+      // this.logger.debug(`MessageSent: ${JSON.stringify(message)}`);
+      // }
 
-      if (signUpData.contact) {
-        // const message = await this.msgService.sendMessage(
-        //   signUpData.contact,
-        //   id.code,
-        // );
-        // this.logger.debug(`MessageSent: ${JSON.stringify(message)}`);
-      }
-
-      this.logger.debug(`MailSent: ${JSON.stringify(response)}`);
+      // this.logger.debug(`MailSent: ${JSON.stringify(response)}`);
 
       signUpData.password = this.hash(signUpData.password);
-      return { ...this.userService.createUser(signUpData), otpVerificationCode: id.uri };
+      const user = await this.userService.createUser(signUpData);
+      this.logger.log(JSON.stringify(user));
+      return { ...user, otpVerificationCode: id.uri };
     } catch (err) {
       return {
         message: 'Something Went wrong please try again later',

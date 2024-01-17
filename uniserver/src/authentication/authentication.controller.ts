@@ -9,13 +9,16 @@ import {
   Post,
   Query,
   Redirect,
+  Req,
+  Res,
   UseGuards,
 } from '@nestjs/common';
 
 import { Role, User } from '@prisma/client';
+import { Request, Response } from 'express';
 import { AccessTokenGuard } from 'src/guards/accesstoken.guard';
 import { AppAccessGuard } from 'src/guards/app-access.guard';
-import { DevelopmentGuard } from 'src/guards/development.guards';
+import { DevelopmentGuard } from 'src/guards/development.guard';
 import { LogToDbService } from 'src/log-to-db/log-to-db.service';
 import { UserService } from 'src/user/user.service';
 import { MailService } from './mail/mail.service';
@@ -172,13 +175,11 @@ export class AuthController {
   }
 
   @Post('msg')
-  @UseGuards(DevelopmentGuard)
   sendTestMessage(@Body() data: { phoneNumber: string; message: string }) {
     return this.msgService.sendTestMessage(data.phoneNumber, data.message);
   }
 
   @Post('testmail')
-  @UseGuards(DevelopmentGuard)
   sendTestMail(@Body() data: { recepient: string; username: string }) {
     return this.mailService.sendMail(
       data.recepient,
@@ -189,23 +190,38 @@ export class AuthController {
   }
 
   @Post('login')
-  login(@Body() data: { email: string; password: string }) {
+  async login(@Body() data: { email: string; password: string }, @Res() res: Response) {
     console.log(data);
-    if (!/\w*@\w*.\w*/.test(data.email))
+
+    if (!/\w*@\w*.\w*/.test(data.email)) {
       return {
         statusCode: 406,
         message: 'Please provide correct email Address',
       };
-    return this.authService.login(data);
+    }
+    const tokens = await this.authService.login(data);
+
+    res.cookie("accessToken", tokens.accessToken, {
+      httpOnly: true,
+      expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
+    });
+    res.cookie("refreshToken", tokens.refreshToken, {
+      httpOnly: true,
+      expires: new Date(Date.now() + 2000 * 60 * 60 * 24 * 7),
+    });
+    res.send({ message: tokens.message, user: tokens.user })
   }
 
-  @Post('accesstoken')
-  getAccessToken(@Headers('refreshToken') authorization: string) {
-    this.logger.debug(`RefreshToken: ${authorization}`);
+  @Get('accesstoken')
+  getAccessToken(@Req() req: Request) {
+
+    console.log(req.cookies["refreshToken"])
+    const authorization = req.cookies["refreshToken"];
     try {
       return this.authService.generateFromToken(authorization);
     } catch (err) {
       this.logger.error(err);
+      return err;
     }
   }
 

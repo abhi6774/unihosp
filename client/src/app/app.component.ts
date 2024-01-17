@@ -1,6 +1,4 @@
-import { CUSTOM_ELEMENTS_SCHEMA, Component, OnInit } from "@angular/core";
-
-import { CommonModule } from "@angular/common";
+import { Component, OnInit, signal } from "@angular/core";
 import { Router, RouterOutlet } from "@angular/router";
 import { NotificationService } from './notification/notification.service';
 import { UserService } from './services/user.service';

@@ -32,20 +32,26 @@ export const routes: Routes = [
             {
                 path: 'signup',
                 canActivate: [LoggedInGuard],
-                component: SignupComponent
+                component: SignupComponent,
+                data: { animation: "signup" }
             },
             {
                 path: 'login',
                 canActivate: [LoggedInGuard],
-                component: LoginComponent
+                component: LoginComponent,
+                data: { animation: "login" }
             },
-            { path: 'reset-password', component: ResetPasswordComponent },
-            { path: 'forgot-password', component: ForgotComponent },
-            { path: 'v/:id', component: OtpComponent },
+            { path: 'reset-password', component: ResetPasswordComponent, data: { animation: "reset" } },
+            { path: 'forgot-password', component: ForgotComponent, data: { animation: "forgot" } },
+            { path: 'v/:id', component: OtpComponent, data: { animation: "otp" } },
             { path: 'v', redirectTo: '/auth/login' },
         ],
     },
     { path: "addDocs", component: AddDocumentsComponent },
+    {
+        path: 'createprofile',
+        component: CreateprofileComponent,
+    },
     {
         path: 'dashboard',
         canActivate: [DashboardGuard],
@@ -61,11 +67,6 @@ export const routes: Routes = [
             { path: 'hospitals', component: HospitalComponent },
             { path: "record/addDocs", component: AddDocumentsComponent },
         ],
-    },
-    {
-        path: 'createprofile',
-        canActivate: [CreaterpofileGuard],
-        component: CreateprofileComponent,
     },
     { path: 'about', component: AboutComponent },
     { path: '**', component: ErrorComponent },

@@ -14,6 +14,8 @@ export class ForgotComponent implements OnInit {
   constructor(private formBuilder: FormBuilder, private router: Router) {
   }
 
+  emailSent = false;
+
   ngOnInit() {
     this.formGroup = this.formBuilder.group({
       "email": ""

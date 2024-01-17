@@ -46,7 +46,7 @@ export default class UniCookieService {
   store(name: CookieName, payload: string, options: { expire?: number, path?: string } = {}) {
     let { path, expire } = options;
     expire = expire || 2592000;
-    this.cookie.set(name, payload, expire, path);
+    this.cookie.set(name, payload, expire, path,);
   }
 
   getAccessToken() {

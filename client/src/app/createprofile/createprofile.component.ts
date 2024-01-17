@@ -54,13 +54,11 @@ export class CreateprofileComponent implements OnInit {
   handleFormSubmission($event: any) {
     $event.preventDefault()
     this.trySubmit = true;
-    // console.log(this.handle);
     const value = this.createProfileForm.value;
     if (this.createProfileForm.valid) {
       this.loading = true;
       this.profileService.createPatientProfile({ ...value, handle: value['handle'], fName: value['firstname'], lName: value['lastname'] })
         .subscribe((profile) => {
-          // console.log(profile);
           this.loading = false;
           this.router.navigate(['/dashboard'])
         })

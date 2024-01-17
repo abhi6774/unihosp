@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
-import UniCookieService from 'src/app/services/unicookie.service';
 import { AuthService } from '../../services/auth.service';
 import { FieldType, HUIcon } from '../interfaces';
 

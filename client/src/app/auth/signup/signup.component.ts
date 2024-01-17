@@ -69,7 +69,6 @@ export class SignupComponent implements OnInit {
       email: new FormControl('', [Validators.required, Validators.email]),
       contact: new FormControl('', [
         Validators.required,
-        Validators.pattern(/^(\+\d{1,2})-(\d{10})$/),
       ]),
       password: this.passwordControl,
       'confirm-password': this.confirmPasswordControl,
@@ -105,10 +104,10 @@ export class SignupComponent implements OnInit {
 
     // console.log(this.signupForm.value);
     const values = this.signupForm.value;
-    // console.log(
-    //   this.signupForm.valid,
-    //   this.validatePass(values.password, values['confirm-password'])
-    // );
+    console.log(
+      this.signupForm,
+      this.validatePass(values.password, values['confirm-password'])
+    );
     if (
       this.validatePass(values.password, values['confirm-password']) &&
       this.signupForm.valid

@@ -1,4 +1,4 @@
-import { animate, group, query, style, transition, trigger } from "@angular/animations";
+import { AnimationMetadata, animate, group, query, state, style, transition, trigger } from "@angular/animations";
 import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from "@angular/router";
 
@@ -8,39 +8,33 @@ import { RouterOutlet } from "@angular/router";
   styleUrls: ["authentication.component.scss"],
   animations: [
     trigger("routerAnimation", [
-      transition("* => reset", [
-        query(":enter, :leave", [
-          style({
-            // position: 'absolute',
-            display: "flex",
-          })
-        ], { optional: true }),
-      ]),
-      transition("* => *", [
-        query(":enter, :leave", [
-          style({
-            position: 'absolute',
-          })
-        ], { optional: true }),
-        group([
-          query(":leave", [
-            animate("200ms ease-in", style({
-              opacity: 0,
-              transform: "translateX(-100%)"
-            }))
-          ], { optional: true }),
-          query(":enter", [
-            style({
-              transform: "translate(100%)",
-              opacity: 0
-            }),
-            animate("500ms 200ms ease", style({
-              opacity: 1,
-              transform: "translate(0px)"
-            }),)
-          ], { optional: true }),
-        ])
-      ])
+      state("unknown", style({
+        width: "300px",
+        height: "420px"
+      })),
+      state("login", style({
+        width: "320px",
+        height: "420px"
+      })),
+      state("signup", style({
+        width: "320px",
+        height: "520px",
+      })),
+      state("forgot", style({
+        width: "320px",
+        height: "420px",
+      })),
+      state("otp", style({
+        width: "320px",
+        height: "420px",
+      })),
+      animateChild("unknown => login", "320px", "420px", "left"),
+      animateChild("login => signup", "320px", "520px"),
+      animateChild("signup => login", "320px", "420px", "right"),
+      animateChild("forgot => login", "320px", "420px", "right"),
+      animateChild("login => forgot", "320px", "420px"),
+      animateChild("signup => otp", "460px", "260px"),
+      animateChild("otp => signup", "320px", "520px", "right",),
     ])
   ]
 })
@@ -51,11 +45,50 @@ export class AuthenticationComponent implements OnInit {
   }
 
   switchPage(outlet: RouterOutlet) {
-    if (outlet.isActivated)
-      return outlet.activatedRoute.snapshot.url;
-    return null
+    return outlet && outlet.activatedRouteData && outlet.activatedRouteData["animation"];
   }
 
   ngOnInit() {
   }
+}
+
+
+type PageTransistionDirection = 'left' | 'right' | 'up' | 'down';
+
+function animateChild(stateChangeExp: string, width: string | number, height: string | number,
+  direction: PageTransistionDirection = "left", moretriggers?: AnimationMetadata[]) {
+
+  const dtr = direction === "left" || direction === "down" ? 1 : -1;
+
+  const xORy = direction === "left" || direction === "right" ? "X" : "Y";
+
+  const optional = { optional: true }
+
+  return transition(stateChangeExp, [
+    query(":enter, :leave", style({
+      position: "absolute",
+      transform: `translate${xORy}(${120 * dtr}%)`,
+      left: "0%",
+      width: "100%",
+      opacity: 0
+    }), optional),
+    group([
+      animate("600ms ease", style({
+        width,
+        height,
+      })),
+      query(":leave", [
+        animate(`600ms ease-out`, style({
+          opacity: 1,
+          transform: `translate${xORy}(${-120 * dtr}%)`
+        }))
+      ]),
+      query(":enter", [
+        animate(`600ms 200ms ease-out`, style({
+          opacity: 1,
+          transform: `translate${xORy}(0%)`
+        }))
+      ]),
+    ])
+  ])
 }

@@ -60,8 +60,9 @@ body {
   background-color: var(--primary-color);
 }
 
-// add for profile styles in body
-// accent-color: #3b887e;
+button[type="submit"] {
+  cursor: pointer;
+}
 
 i {
   font-weight: bold;

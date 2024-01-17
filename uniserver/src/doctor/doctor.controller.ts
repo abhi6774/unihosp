@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Logger, Post, UseGuards } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { AppAccessGuard } from 'src/guards/app-access.guard';
-import { DevelopmentGuard } from 'src/guards/development.guards';
+import { DevelopmentGuard } from 'src/guards/development.guard';
 import { DoctorService } from './service/doctor.service';
 
 

@@ -54,7 +54,10 @@ export class DoctorService {
 
   private async doctorExists(data: { id?: string, handle?: string }) {
     const doctor = await this.prismaService.doctor.findUnique({
-      where: data
+      where: {
+        id: data.id!,
+        handle: data.handle!
+      }
     });
     if (doctor) return { status: true, doctor }
     else return { status: false, doctor: undefined }

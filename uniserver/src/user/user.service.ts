@@ -84,7 +84,7 @@ export class UserService {
     try {
       await this.prismaService.verificationMailRequest.deleteMany({
         where: {
-          OR: [{ email: email }, { contact: email }],
+          OR: [{ email }, { contact }],
         },
       });
       const mailCreate =
