@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
+import { tap } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 import { FieldType, HUIcon } from '../interfaces';
 
@@ -50,10 +51,10 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.valid) {
       const formValue = this.loginForm.value;
       this.loading = true;
-      this.authService.login(formValue['email'], formValue['password']).subscribe((data) => {
+      this.authService.login(formValue['email'], formValue['password']).pipe(tap(data => {
         this.loading = false;
-
-      })
+        console.log(data);
+      }));
     }
   }
 }

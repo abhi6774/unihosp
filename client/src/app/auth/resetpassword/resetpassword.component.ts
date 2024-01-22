@@ -12,8 +12,6 @@ import { FieldType, HUIcon } from "../interfaces";
 })
 export class ResetPasswordComponent implements OnInit {
 
-
-
   passInputFields: {
     title: string
     classList: HUIcon,

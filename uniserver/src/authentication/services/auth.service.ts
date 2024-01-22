@@ -10,7 +10,12 @@ import excludePassword from 'src/utils/excludePassword';
 import { MailService } from '../mail/mail.service';
 import { MSGService } from './msg.service';
 
-
+interface LoginResponse {
+  accessToken: string,
+  refreshToken: string,
+  refreshTokenId: string,
+  user: Omit<User, "password">
+}
 @Injectable({})
 export class AuthService {
 
@@ -26,43 +31,35 @@ export class AuthService {
 
   private logger = new Logger(AuthService.name);
 
-  async login(authData: { email: string, password: string }) {
 
-    let user = await this.userService.user({ email: authData.email }, { patient: true });
-    this.logger.log("Here")
+
+  async login(authData: { email: string, password: string }): Promise<LoginResponse> {
+
+    let user = await this.userService.user({ email: authData.email });
     this.logger.log(JSON.stringify(user))
     authData.password = this.hash(authData.password)
 
-    if (!user) return { message: "Authentication Failed", description: 'User doesn\'t exists' }
+    if (!user) return null;
 
     if (user.password !== authData.password) {
-      return {
-        message: 'Authentication Failed',
-        description: "Wrong Username or Password"
-      }
+      return null;
     }
 
-    let patientId: string;
+    const userDetailsWithoutPassword = excludePassword(user, ['password'])
 
-    if (user.patient)
-      patientId = user.patient.id;
+    this.logger.log(JSON.stringify(userDetailsWithoutPassword));
 
-    const after = excludePassword(user, ['password', 'patient'])
-    this.logger.log(JSON.stringify(after))
+    const detailsToCreateToken = { user: userDetailsWithoutPassword.id, email: userDetailsWithoutPassword.email };
 
-    let nUser = {
-      ...after,
-      patient: patientId
-    }
-    const accessToken = this.generateToken(nUser);
-    const refreshToken = this.generateToken(nUser, TokenType.RefreshToken);
+    const accessToken = this.generateToken(detailsToCreateToken);
+    const refreshToken = this.generateToken(detailsToCreateToken, TokenType.RefreshToken);
     const refreshTokenSaved = await this.userService.usersAddAuthToken(user.id, refreshToken);
+
     return {
       accessToken,
       refreshToken,
       refreshTokenId: refreshTokenSaved.id,
-      message: "Authentication has been done successfully",
-      user: nUser
+      user: userDetailsWithoutPassword
     }
   }
 

@@ -13,7 +13,8 @@ async function bootstrap() {
       'http://127.0.0.1:4200',
       'http://localhost:5500',
       'http://127.0.0.1:5500',
-    ]
+    ],
+    credentials: true
   })
 
   app.setGlobalPrefix("api/v1/");

@@ -193,23 +193,38 @@ export class AuthController {
   async login(@Body() data: { email: string; password: string }, @Res() res: Response) {
     console.log(data);
 
+
     if (!/\w*@\w*.\w*/.test(data.email)) {
       return {
         statusCode: 406,
         message: 'Please provide correct email Address',
       };
     }
-    const tokens = await this.authService.login(data);
+    const response = await this.authService.login(data);
+    if (!response) {
+      res.status(401);
+      res.send({
+        message: "Authentication Failed",
+        data: null
+      });
+    }
 
-    res.cookie("accessToken", tokens.accessToken, {
+    res.cookie("accessToken", response.accessToken, {
       httpOnly: true,
       expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
+      secure: true
     });
-    res.cookie("refreshToken", tokens.refreshToken, {
+    res.cookie("refreshToken", response.refreshToken, {
       httpOnly: true,
       expires: new Date(Date.now() + 2000 * 60 * 60 * 24 * 7),
+      secure: true
     });
-    res.send({ message: tokens.message, user: tokens.user })
+    res.send({
+      message: "Authentication Successful",
+      data: {
+        user: response.user,
+      }
+    })
   }
 
   @Get('accesstoken')

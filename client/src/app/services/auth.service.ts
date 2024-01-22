@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { map } from 'rxjs';
+import { map, tap } from 'rxjs';
 import { User } from 'src/app/interfaces';
 import { UserService } from 'src/app/services/user.service';
 import { AccessTokenResponse, LoginResponse, LogoutResponse } from '../auth/interfaces';
@@ -40,14 +40,16 @@ export class AuthService {
       email, password
     })
 
-    response.subscribe((response) => {
-      this.userService.setCurrentUser(response.user);
-      console.log(response);
-      if (!response.user.patient) this.router.navigate(['/dashboard'])
-      this.router.navigate(['/createprofile'])
-    })
+    // response.subscribe((response) => {
+    //   console.log(response);
+    //   this.userService.setCurrentUser(response.data.user);
+    //   if (!response.data.user) this.router.navigate(['/dashboard'])
+    //   this.router.navigate(['/createprofile'])
+    // })
 
-    return response;
+    return response.pipe(tap(value => {
+      console.log(value);
+    }));
   }
 
   get isLoggedIn(): boolean {
