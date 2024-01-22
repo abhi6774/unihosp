@@ -17,6 +17,8 @@ async function bootstrap() {
     credentials: true
   })
 
+  console.log("talented")
+
   app.setGlobalPrefix("api/v1/");
   app.useWebSocketAdapter(new SocketIOAdapter(app));
   await app.listen(3000);
