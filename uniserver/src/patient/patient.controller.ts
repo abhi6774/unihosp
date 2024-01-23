@@ -1,9 +1,10 @@
-import { Body, Controller, Delete, Get, Headers, Post, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Headers, Post, Put, Req, UseGuards } from '@nestjs/common';
 import { Prisma, User } from '@prisma/client';
 import { AuthService } from 'src/authentication/services/auth.service';
 import { AccessTokenGuard } from 'src/guards/accesstoken.guard';
 import { PatientGuard } from './guard/patient.guard';
 import { PatientService } from './service/patient.service';
+import { Request } from 'express';
 
 interface PatientDeleteInput {
   handle?: string,
@@ -34,7 +35,8 @@ export class PatientController {
   }
 
   @Get('/user')
-  async getPatientByUserID(@Headers('user') user: User) {
+  async getPatientByUserID(@Req() req: Request) {
+    const user: User = req["user"]
     return this.patientService.findPatientProfile({
       userId: user.id
     })
@@ -58,7 +60,8 @@ export class PatientController {
   }
 
   @Post()
-  createPatientProfile(@Headers('user') user: User, @Body() data: Prisma.PatientCreateInput) {
+  createPatientProfile(@Req() req: Request, @Body() data: Prisma.PatientCreateInput) {
+    const user: User = req["user"];
     console.log(user)
     return this.patientService.createPatientProfile({ ...data, ownerId: user.id });
   }

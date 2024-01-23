@@ -8,7 +8,7 @@ import { UserService } from '../services/user.service';
 @Injectable({
   providedIn: 'root',
 })
-export class DashboardGuard  {
+export class DashboardGuard {
   constructor(
     private router: Router,
     private user: UserService,

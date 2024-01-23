@@ -3,7 +3,7 @@ import { AppAccessGuard } from 'src/guards/app-access.guard';
 import { SearchService } from './search.service';
 
 @Controller('search')
-@UseGuards(AppAccessGuard)
+// @UseGuards(AppAccessGuard)
 export class SearchController {
 
   private logger = new Logger(SearchController.name)

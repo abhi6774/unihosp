@@ -8,7 +8,6 @@ import { AuthService } from 'src/authentication/services/auth.service';
 @Injectable()
 export class PatientGuard implements CanActivate {
 
-
   private logger = new Logger(PatientGuard.name);
 
   constructor() { }
