@@ -31,8 +31,6 @@ export class AuthService {
     const response = await fetch("http://localhost:3000/auth/accesstoken", {
       method: 'POST',
     });
-    const data: AccessTokenResponse = await response.json();
-    this.cookie.storeAccessToken(data.accessToken, { expire: 2592000, path: "/" });
   }
 
   login(email: string, password: string) {
@@ -40,20 +38,15 @@ export class AuthService {
       email, password
     })
 
-    // response.subscribe((response) => {
-    //   console.log(response);
-    //   this.userService.setCurrentUser(response.data.user);
-    //   if (!response.data.user) this.router.navigate(['/dashboard'])
-    //   this.router.navigate(['/createprofile'])
-    // })
-
     return response.pipe(tap(value => {
       console.log(value);
+      this.userService.setCurrentUser(value.data.user)
     }));
   }
 
   get isLoggedIn(): boolean {
-    return !!this.cookie.retrieve('uid');
+
+    return this.userService.currentUser === null;
   }
 
   logout() {
@@ -64,7 +57,6 @@ export class AuthService {
     })
 
     return reponse.pipe(map((value) => {
-      // console.log(value);
       this.cookie.deleteAllCookie();
     }));
   }

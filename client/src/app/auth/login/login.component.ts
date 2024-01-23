@@ -51,10 +51,9 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.valid) {
       const formValue = this.loginForm.value;
       this.loading = true;
-      this.authService.login(formValue['email'], formValue['password']).pipe(tap(data => {
+      this.authService.login(formValue['email'], formValue['password']).subscribe(data => {
         this.loading = false;
-        console.log(data);
-      }));
+      });
     }
   }
 }

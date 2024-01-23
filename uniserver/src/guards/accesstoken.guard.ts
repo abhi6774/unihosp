@@ -2,6 +2,7 @@ import { CanActivate, ExecutionContext, Injectable, Logger } from '@nestjs/commo
 import { ConfigService } from '@nestjs/config';
 import { Reflector } from '@nestjs/core';
 import { Role, User } from '@prisma/client';
+import { Request } from 'express';
 import { Observable } from 'rxjs';
 import { AuthService } from 'src/authentication/services/auth.service';
 
@@ -22,9 +23,13 @@ export class AccessTokenGuard implements CanActivate {
       return true
     else {
       this.logger.debug(`Validating`);
-      const user = request.headers['authorization'] ? this.validate(request.headers['authorization']) : undefined;
+      const authorization = `unihosp ${request.cookies["accessToken"]}`;
+      console.log("Authorization", authorization)
+      // return false
+      const user = authorization ? this.validate(authorization) : undefined;
+      this.logger.log(user)
       if (!user) return false;
-      request.headers['user'] = user;
+      request["user"] = user;
       return true
     }
   }

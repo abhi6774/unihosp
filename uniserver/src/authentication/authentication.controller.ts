@@ -51,23 +51,6 @@ export class AuthController {
 
   private logger = new Logger(AuthController.name);
 
-  @Post('users')
-  getAllUsers(@Body() data: any) {
-    return this.userService.users({ ...data });
-  }
-
-  @Get('user')
-  @UseGuards(AccessTokenGuard)
-  getCurrentUser(@Headers('user') user: User) {
-    return this.userService.user(
-      {
-        id: user.id,
-      },
-      {
-        patient: true,
-      },
-    );
-  }
 
   @Post('exists')
   async doesExists(@Body() data: { email?: string }) {
@@ -212,12 +195,14 @@ export class AuthController {
     res.cookie("accessToken", response.accessToken, {
       httpOnly: true,
       expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
-      secure: true
+      secure: true,
+      sameSite: "strict"
     });
     res.cookie("refreshToken", response.refreshToken, {
       httpOnly: true,
       expires: new Date(Date.now() + 2000 * 60 * 60 * 24 * 7),
-      secure: true
+      secure: true,
+      sameSite: "strict"
     });
     res.send({
       message: "Authentication Successful",

@@ -16,10 +16,15 @@ export class RequestsInterceptor implements HttpInterceptor {
 
   private readonly rootEndPoint = `http://localhost:3000/api/v1`;
 
-  constructor(private unicookieService: UniCookieService, private router: Router) { }
+  constructor(private router: Router) { }
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     const newRequest = request.clone({
+      headers: new HttpHeaders({
+        "x-development-key": "86dff15115508c9fb1da8c748740e753",
+        "app-id": "eba833927e93be1e8da25766c67f5ef8"
+      }),
+      withCredentials: true,
       url: `${this.rootEndPoint}${request.url}`,
     })
     return next.handle(newRequest);

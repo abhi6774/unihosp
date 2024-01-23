@@ -10,7 +10,9 @@ import { UserService } from './services/user.service';
 })
 export class AppComponent implements OnInit {
 
-  constructor(private userService: UserService, private router: Router, private notification: NotificationService) { }
+  constructor(private userService: UserService, private router: Router,
+    // private notification: NotificationService
+  ) { }
 
   value = ""
 
@@ -18,16 +20,8 @@ export class AppComponent implements OnInit {
 
 
   ngOnInit(): void {
-    // console.log(this.router.url)
+    console.log(this.router.url)
   }
 
-  onChange() {
-    // console.log(this.value)
-    this.userService.getUsersByMail(this.value).subscribe(observe => {
-      // console.log(observe);
-      this.exists = observe.email ? observe.email : false;
-    })
-  }
-
-
+  onChange() { }
 }

@@ -20,7 +20,7 @@ export class UserService {
   }
 
   constructor(private http: HttpClient) {
-    this.http.get<User>('/auth/user').subscribe({
+    this.http.get<User>('/user').subscribe({
       next: (user) => {
         this.user.next(user);
       },
@@ -33,15 +33,13 @@ export class UserService {
   }
 
   refereshCurrentUser() {
-    const sub = this.http.get<User>('/auth/user').subscribe((user) => {
+    const sub = this.http.get<User>('/user').subscribe((user) => {
       this.setCurrentUser(user);
-    })
-
-    // sub.unsubscribe();
+    });
   }
 
   getUsersByMail(query: string) {
-    return this.http.post<{ email?: boolean, handle?: boolean }>("/auth/exists", {
+    return this.http.post<{ email?: boolean, handle?: boolean }>("/user/exists", {
       email: query
     });
   }

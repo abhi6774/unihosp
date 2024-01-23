@@ -28,6 +28,8 @@ import { ChatService } from './socketServices/chatting/service/chat.service';
 import { NotifierGateway } from './socketServices/notifier/notifier.gateway';
 import { NotifierService } from './socketServices/notifier/service/notifier.service';
 import { UserService } from './user/user.service';
+import { UserController } from './user/user.controller';
+import { UserModule } from './user/user.module';
 
 
 
@@ -49,9 +51,17 @@ import { UserService } from './user/user.service';
     ThrottlerModule.forRoot({
       ttl: 60,
       limit: 30,
-    })
+    }),
   ],
-  controllers: [AuthController, PatientController, HospitalController, AvatarsController, DoctorController, SearchController],
+  controllers: [
+    AuthController,
+    UserController,
+    PatientController,
+    HospitalController,
+    AvatarsController,
+    DoctorController,
+    SearchController,
+  ],
   providers: [
     PrismaService,
     AuthService,

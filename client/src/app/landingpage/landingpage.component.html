@@ -19,10 +19,16 @@
         <h1>UniHosp</h1>
         <h3>Welcomes you!</h3>
         <h6>"Empowering your health journey with cutting-edge technology."</h6>
+        @if (!user$) {
         <div class="signlogbtn">
           <a routerLink="/auth/login"><button class="loginbtn">Login</button></a>
           <a routerLink="/auth/signup"><button class="signupbtn">SignUp</button></a>
         </div>
+        } @else {
+        <div class="signlogbtn" style="font-size: 12px;">
+          <a routerLink="/dashboard"><button class="loginbtn">Go to dashboard</button></a>
+        </div>
+        }
       </div>
     </div>
 

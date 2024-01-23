@@ -20,54 +20,55 @@ import { ProfileComponent } from './dashboard/pages/profile/profile.component';
 import { ErrorComponent } from './error/error.component';
 import { CreaterpofileGuard } from './guards/createrpofile.guard';
 import { LandingPageComponent } from './landingpage/landingpage.component';
+import { LoginGuard } from "./guards/login.guard";
 
 
 export const routes: Routes = [
-    { path: '', component: LandingPageComponent },
-    {
-        path: 'auth',
-        component: AuthenticationComponent,
-        children: [
-            { path: '', pathMatch: 'full', redirectTo: '/auth/login' },
-            {
-                path: 'signup',
-                canActivate: [LoggedInGuard],
-                component: SignupComponent,
-                data: { animation: "signup" }
-            },
-            {
-                path: 'login',
-                canActivate: [LoggedInGuard],
-                component: LoginComponent,
-                data: { animation: "login" }
-            },
-            { path: 'reset-password', component: ResetPasswordComponent, data: { animation: "reset" } },
-            { path: 'forgot-password', component: ForgotComponent, data: { animation: "forgot" } },
-            { path: 'v/:id', component: OtpComponent, data: { animation: "otp" } },
-            { path: 'v', redirectTo: '/auth/login' },
-        ],
-    },
-    { path: "addDocs", component: AddDocumentsComponent },
-    {
-        path: 'createprofile',
-        component: CreateprofileComponent,
-    },
-    {
-        path: 'dashboard',
-        canActivate: [DashboardGuard],
-        canActivateChild: [DashboardGuard],
-        component: DashboardComponent,
-        children: [
-            { path: '', redirectTo: 'welcome', pathMatch: 'full' },
-            { path: 'welcome', component: HomeComponent },
-            { path: 'profile', component: ProfileComponent },
-            { path: 'hospital', component: HospitalComponent },
-            { path: 'appointments', component: AppointmentComponent },
-            { path: 'history', component: DocumentComponent },
-            { path: 'hospitals', component: HospitalComponent },
-            { path: "record/addDocs", component: AddDocumentsComponent },
-        ],
-    },
-    { path: 'about', component: AboutComponent },
-    { path: '**', component: ErrorComponent },
+  { path: '', component: LandingPageComponent },
+  {
+    path: 'auth',
+    component: AuthenticationComponent,
+    children: [
+      { path: '', pathMatch: 'full', redirectTo: '/auth/login' },
+      {
+        path: 'signup',
+        canActivate: [LoginGuard],
+        component: SignupComponent,
+        data: { animation: "signup" }
+      },
+      {
+        path: 'login',
+        canActivate: [LoginGuard],
+        component: LoginComponent,
+        data: { animation: "login" }
+      },
+      { path: 'reset-password', component: ResetPasswordComponent, data: { animation: "reset" } },
+      { path: 'forgot-password', component: ForgotComponent, data: { animation: "forgot" } },
+      { path: 'v/:id', component: OtpComponent, data: { animation: "otp" } },
+      { path: 'v', redirectTo: '/auth/login' },
+    ],
+  },
+  { path: "addDocs", component: AddDocumentsComponent },
+  {
+    path: 'createprofile',
+    component: CreateprofileComponent,
+  },
+  {
+    path: 'dashboard',
+    canActivate: [],
+    canActivateChild: [],
+    component: DashboardComponent,
+    children: [
+      { path: '', redirectTo: 'welcome', pathMatch: 'full' },
+      { path: 'welcome', component: HomeComponent },
+      { path: 'profile', component: ProfileComponent },
+      { path: 'hospital', component: HospitalComponent },
+      { path: 'appointments', component: AppointmentComponent },
+      { path: 'history', component: DocumentComponent },
+      { path: 'hospitals', component: HospitalComponent },
+      { path: "record/addDocs", component: AddDocumentsComponent },
+    ],
+  },
+  { path: 'about', component: AboutComponent },
+  { path: '**', component: ErrorComponent },
 ];
