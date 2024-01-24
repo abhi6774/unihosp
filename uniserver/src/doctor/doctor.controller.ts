@@ -8,7 +8,7 @@ import { DoctorService } from './service/doctor.service';
 
 @Controller('doctor')
 // @UseGuards(DevelopmentGuard)
-// @UseGuards(AppAccessGuard)
+@UseGuards(AppAccessGuard)
 export class DoctorController {
 
   private logger = new Logger(DoctorController.name)

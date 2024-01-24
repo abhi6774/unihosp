@@ -1,9 +1,7 @@
 import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
+import { SearchService } from './search.service';
+import { Subscription, tap,  } from 'rxjs';
 
-interface SearchResult {
-  title: string,
-  description: string
-}
 
 @Component({
   selector: 'uni-searchbar',
@@ -14,13 +12,13 @@ export class SearchbarComponent implements AfterViewInit {
 
   focused = false;
 
-  result: any[] = [
-    { title: "Heading", description: "Lorem ipsum dolor, sit amet consectetur adipisicing elit." },
-    { title: "Heading", description: "Lorem ipsum dolor, sit amet consectetur adipisicing elit." }
-  ]
+  constructor(protected searchService: SearchService) { }
 
-  ngAfterViewInit(): void {
-  }
+  results$ = this.searchService.queryResult('').pipe(tap((res) => { console.log(res); return res }))
+
+  subscription!: Subscription;
+
+  ngAfterViewInit(): void { }
 
   onFocus($event: any) {
     $event.preventDefault();
@@ -31,5 +29,8 @@ export class SearchbarComponent implements AfterViewInit {
     this.focused = false;
   }
 
-
+  onSearchInput($event: KeyboardEvent) {
+    const element = $event.target as HTMLInputElement;
+    this.results$ = this.searchService.queryResult(element.value);
+  }
 }

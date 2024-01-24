@@ -1,13 +1,12 @@
 import { Body, Controller, Delete, Get, Logger, Post, Query, UseGuards } from '@nestjs/common';
-import { HospitalGuard } from './guard/hospital.guard';
 import Roles from './metadata/roles.metadata';
 import { HospitalService } from './services/hospital.service';
+import { Hospital, Prisma } from '@prisma/client';
+import { CreateHospitalInput, CreateMultipleHospitalInput } from 'src/interfaces/hospital';
 
-interface CreateMultipleHospitalInput { name: string, handle?: string, location?: string, coordinates: { longitude: number, latitude: number } }
 
 @Roles('Admin')
 @Controller('hospital')
-// @UseGuards(HospitalGuard)
 export class HospitalController {
 
   private logger = new Logger(HospitalController.name);
@@ -15,15 +14,15 @@ export class HospitalController {
   constructor(private hospitalService: HospitalService) { }
 
   @Post()
-  createHospital(@Body() data: { name: string, handle?: string }) {
+  createHospital(@Body() data: CreateHospitalInput) {
     return this.hospitalService.createOneHospital({
-      name: data.name,
+      ...data,
       handle: data.handle || this.generateHandle(data.name)
     })
   }
 
   @Post("/multi")
-  createHospitals(@Body() data: []) {
+  createHospitals(@Body() data: CreateMultipleHospitalInput) {
     return this.hospitalService.createManyHospital(data);
   }
 
@@ -33,30 +32,59 @@ export class HospitalController {
   }
 
   @Get()
-  getHospital(@Body() data: { id?: string, handle?: string }) {
-    return this.hospitalService.getHospitalById({ id: data.id, handle: data.handle })
+  async getHospital(@Body() data?: { id?: string, handle?: string }, @Query("q") query?: string) {
+    console.log(data, query)
+    try {
+      if (Object.keys(data).length > 0) {
+        const result = await this.hospitalService.getHospitalById({ id: data.id, handle: data.handle })
+        return {
+          hospital: result
+        }
+      }
+      this.logger.debug(`Query: ${query}`);
+      if (query)
+        return this.hospitalService.getHospitals({
+          OR: [
+            {
+              handle: { contains: query }
+            },
+            {
+              name: { contains: query }
+            },
+            {
+              location: { contains: query }
+            }
+          ]
+        })
+      else
+        return this.hospitalService.getHospitals({});
+    } catch (err) {
+      return {
+        "message": "something went wrong"
+      }
+    }
   }
 
-  @Get("all")
-  getHospitals(@Query("q") query?: string) {
-    this.logger.debug(`Query: ${query}`);
-    if (query)
-      return this.hospitalService.getHospitals({
-        OR: [
-          {
-            handle: { contains: query }
-          },
-          {
-            name: { contains: query }
-          },
-          {
-            location: { contains: query }
-          }
-        ]
-      })
-    else
-      return this.hospitalService.getHospitals({});
-  }
+  // @Get("all")
+  // getHospitals(@Query("q") query?: string) {
+  //   this.logger.debug(`Query: ${query}`);
+  //   if (query)
+  //     return this.hospitalService.getHospitals({
+  //       OR: [
+  //         {
+  //           handle: { contains: query }
+  //         },
+  //         {
+  //           name: { contains: query }
+  //         },
+  //         {
+  //           location: { contains: query }
+  //         }
+  //       ]
+  //     })
+  //   else
+  //     return this.hospitalService.getHospitals({});
+  // }
 
   private generateHandle(name: string): string {
     const splittedName = name.split(" ");

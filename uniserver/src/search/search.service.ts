@@ -26,25 +26,25 @@ export class SearchService {
       }
     });
 
-    if (doctors.length < 5) {
-      this.logger.debug(`Doctor length: ${doctors.length}`)
-      const ifContains = await this.prisma.doctor.findMany({
-        where: {
-          OR: [
-            { fName: { contains: query } },
-            { lName: { contains: query } },
-            { handle: { contains: query } }
-          ]
-        },
-        select: {
-          id: true,
-          fName: true,
-          lName: true,
-          handle: true,
-        }
-      });
-      doctors.push(...ifContains);
-    }
+    // if (doctors.length < 5) {
+    //   this.logger.debug(`Doctor length: ${doctors.length}`)
+    //   const ifContains = await this.prisma.doctor.findMany({
+    //     where: {
+    //       OR: [
+    //         { fName: { contains: query } },
+    //         { lName: { contains: query } },
+    //         { handle: { contains: query } }
+    //       ]
+    //     },
+    //     select: {
+    //       id: true,
+    //       fName: true,
+    //       lName: true,
+    //       handle: true,
+    //     }
+    //   });
+    //   doctors.push(...ifContains);
+    // }
 
     return doctors.map((doctor) => ({
       handle: doctor.handle,
@@ -70,24 +70,24 @@ export class SearchService {
       }
     });
 
-    if (hospitals.length < 5) {
-      const ifContains = await this.prisma.hospital.findMany({
-        where: {
-          OR: [
-            { name: { contains: query } },
-            { location: { contains: query } },
-            { handle: { contains: query } }
-          ]
-        },
-        select: {
-          id: true,
-          name: true,
-          location: true,
-          handle: true
-        }
-      });
-      hospitals.push(...ifContains);
-    }
+    // if (hospitals.length < 5) {
+    //   const ifContains = await this.prisma.hospital.findMany({
+    //     where: {
+    //       OR: [
+    //         { name: { contains: query } },
+    //         { location: { contains: query } },
+    //         { handle: { contains: query } }
+    //       ]
+    //     },
+    //     select: {
+    //       id: true,
+    //       name: true,
+    //       location: true,
+    //       handle: true
+    //     }
+    //   });
+    //   hospitals.push(...ifContains);
+    // }
 
     return hospitals.map((hospital) => ({
       handle: hospital.handle,
@@ -111,25 +111,25 @@ export class SearchService {
         fName: true,
         lName: true,
         handle: true,
-      }
+      },
     });
 
-    if (patients.length < 5) {
-      const ifContain = await this.prisma.patient.findMany({
-        where: {
-          handle: { contains: query },
-          fName: { contains: query },
-          lName: { contains: query },
-        },
-        select: {
-          id: true,
-          fName: true,
-          lName: true,
-          handle: true,
-        }
-      })
-      patients.push(...ifContain);
-    }
+    // if (patients.length < 5) {
+    //   const ifContain = await this.prisma.patient.findMany({
+    //     where: {
+    //       handle: { contains: query },
+    //       fName: { contains: query },
+    //       lName: { contains: query },
+    //     },
+    //     select: {
+    //       id: true,
+    //       fName: true,
+    //       lName: true,
+    //       handle: true,
+    //     }
+    //   })
+    //   patients.push(...ifContain);
+    // }
 
     return patients.map(patient => ({
       type: 'Patient',
@@ -142,6 +142,7 @@ export class SearchService {
     const doctors = this.queryForDoctors(query);
     const hospitals = this.queryForHospitals(query);
     const patients = this.queryForPatients(query);
+    console.log(await doctors, await patients, await hospitals)
 
     return [...(await doctors), ...(await hospitals), ...(await patients)];
   }

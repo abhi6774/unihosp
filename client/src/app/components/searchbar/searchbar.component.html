@@ -1,15 +1,30 @@
 <div class="searchbar">
-  <input type="text" placeholder="Search" (focus)="onFocus($event)" (blur)="onBlur($event)">
-  <div class="result" *ngIf="focused && result.length > 0">
+  <input type="text" placeholder="Search" (keyup)="onSearchInput($event)" (focus)="onFocus($event)"
+    (blur)="onBlur($event)">
+  <div class="result" *ngIf="focused && (results$ | async) !== null">
     <ul>
-      <li *ngFor="let rs of result">
+      @for (rs of results$ | async; track $index) {
+
+      @if (rs.type === "Doctor" || rs.type === "Patient") {
+      <li>
         <a routerLink="/">
-          <div class="sr-title">{{rs.title}}</div>
+          <div class="sr-title">{{rs.name}}</div>
           <div class="sr-desc">
-            {{rs.description}}
+            {{rs.handle}}
           </div>
         </a>
       </li>
+      } @else {
+      <li>
+        <a routerLink="/">
+          <div class="sr-title">{{rs.name}}</div>
+          <div class="sr-desc">
+            {{rs.location}}
+          </div>
+        </a>
+      </li>
+      }
+      }
     </ul>
   </div>
-</div> 
+</div>

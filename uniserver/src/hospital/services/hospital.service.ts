@@ -1,6 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
+import { Hospital, Prisma } from '@prisma/client';
 import { PrismaService } from 'src/database/prisma.service';
+import { CreateHospitalInput, CreateMultipleHospitalInput } from 'src/interfaces/hospital';
 
 @Injectable()
 export class HospitalService {
@@ -9,9 +10,19 @@ export class HospitalService {
 
   constructor(private readonly prismaService: PrismaService) { }
 
-  createOneHospital(input: Prisma.HospitalCreateInput) {
+  createOneHospital(input: CreateHospitalInput) {
     return this.prismaService.hospital.create({
-      data: input
+      data: {
+        name: input.name,
+        coordinates: {
+          create: input.coordinates
+        },
+        handle: input.handle,
+        location: input.location
+      },
+      include: {
+        coordinates: true
+      }
     });
   }
 
@@ -25,21 +36,33 @@ export class HospitalService {
     return generated;
   }
 
-  async createManyHospital(inputs: { name: string, handle?: string, location?: string }[]) {
-    let data: { name: string, handle: string, location?: string }[] = [];
-    for (const input of inputs) {
-      let handle = "";
-      if (!input.handle) {
-        handle = await this.createHandle(input.name);
-      }
-      data.push({ ...input, handle });
+  async createManyHospital(inputs: CreateMultipleHospitalInput) {
+
+    // for (const input of inputs) {
+    //   let handle = "";
+    //   if (!input.handle) {
+    //     handle = await this.createHandle(input.name);
+    //   }
+    //   data.push({ ...input, handle });
+    // }
+
+
+    // return this.prismaService.hospital.createMany({
+    //   data: [],
+    //   skipDuplicates: true
+    // }).catch((err) => ({
+    //   message: err.message
+    // }));
+
+    this.prismaService.hospital.createMany
+    const resposne = {
+      totalCreated: 0,
     }
-    return this.prismaService.hospital.createMany({
-      data,
-      skipDuplicates: true
-    }).catch((err) => ({
-      message: err.message
-    }));
+    inputs.forEach((value) => {
+      this.createOneHospital(value)
+      resposne.totalCreated++;
+    })
+    return resposne
   }
 
   getHospitals(input: Prisma.HospitalWhereInput) {
@@ -50,11 +73,18 @@ export class HospitalService {
 
   getHospitalById(input: Prisma.HospitalWhereUniqueInput) {
     return this.prismaService.hospital.findUnique({
-      where: { ...input },
+      where: {
+        id: input.id,
+        handle: input.handle,
+      },
       include: {
         doctor: true,
         allowedPatientProfiles: true,
         Appointments: true
+      }
+    }).catch((err) => {
+      return {
+        "message": "Something Went wrong"
       }
     })
   }

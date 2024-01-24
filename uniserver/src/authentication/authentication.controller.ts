@@ -38,7 +38,7 @@ interface cSignUpData {
 }
 
 @Controller('auth')
-// @UseGuards(AppAccessGuard)
+@UseGuards(AppAccessGuard)
 export class AuthController {
 
   constructor(
@@ -50,40 +50,6 @@ export class AuthController {
   ) { }
 
   private logger = new Logger(AuthController.name);
-
-
-  @Post('exists')
-  async doesExists(@Body() data: { email?: string }) {
-    const { email } = data;
-
-    const toCheck = email ? ToCheckType.Email : null;
-    let response: any;
-
-    switch (toCheck) {
-      case ToCheckType.Email:
-        if (await this.userService.user({ email })) {
-          console.log(await this.userService.user({ email }));
-          response = {
-            email: true,
-          };
-        }
-        break;
-      default:
-        return {
-          error: '401',
-          email: false,
-          handle: false,
-        };
-    }
-
-    return response
-      ? response
-      : {
-        error: '401',
-        email: false,
-        handle: false,
-      };
-  }
 
   @Post('signup')
   async signup(@Body() signUpData: cSignUpData) {
@@ -157,25 +123,9 @@ export class AuthController {
     }
   }
 
-  @Post('msg')
-  sendTestMessage(@Body() data: { phoneNumber: string; message: string }) {
-    return this.msgService.sendTestMessage(data.phoneNumber, data.message);
-  }
-
-  @Post('testmail')
-  sendTestMail(@Body() data: { recepient: string; username: string }) {
-    return this.mailService.sendMail(
-      data.recepient,
-      data.username,
-      'Unknown',
-      123423,
-    );
-  }
-
   @Post('login')
   async login(@Body() data: { email: string; password: string }, @Res() res: Response) {
     console.log(data);
-
 
     if (!/\w*@\w*.\w*/.test(data.email)) {
       return {
@@ -229,5 +179,54 @@ export class AuthController {
   deleteRefreshToken(@Body('refreshTokenId') refreshTokenId: string) {
     console.log(refreshTokenId);
     return this.authService.deleteRefreshToken(refreshTokenId);
+  }
+
+
+  @Post('msg')
+  sendTestMessage(@Body() data: { phoneNumber: string; message: string }) {
+    return this.msgService.sendTestMessage(data.phoneNumber, data.message);
+  }
+
+  @Post('testmail')
+  sendTestMail(@Body() data: { recepient: string; username: string }) {
+    return this.mailService.sendMail(
+      data.recepient,
+      data.username,
+      'Unknown',
+      123423,
+    );
+  }
+
+  @Post('exists')
+  async doesExists(@Body() data: { email?: string }) {
+    const { email } = data;
+
+    const toCheck = email ? ToCheckType.Email : null;
+    let response: any;
+
+    switch (toCheck) {
+      case ToCheckType.Email:
+        if (await this.userService.user({ email })) {
+          console.log(await this.userService.user({ email }));
+          response = {
+            email: true,
+          };
+        }
+        break;
+      default:
+        return {
+          error: '401',
+          email: false,
+          handle: false,
+        };
+    }
+
+    return response
+      ? response
+      : {
+        error: '401',
+        email: false,
+        handle: false,
+      };
   }
 }
