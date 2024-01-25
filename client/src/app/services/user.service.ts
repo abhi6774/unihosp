@@ -20,16 +20,16 @@ export class UserService {
   }
 
   constructor(private http: HttpClient) {
-    this.http.get<User>('/user').subscribe({
-      next: (user) => {
-        this.user.next(user);
-      },
-      error: (err) => {
-        console.error(err.message);
-        this.user.next(null)
-        of(null);
-      }
-    });
+    // this.http.get<User>('/user').subscribe({
+    //   next: (user) => {
+    //     this.user.next(user);
+    //   },
+    //   error: (err) => {
+    //     console.error(err.message);
+    //     this.user.next(null)
+    //     of(null);
+    //   }
+    // });
   }
 
   refereshCurrentUser() {
@@ -44,3 +44,4 @@ export class UserService {
     });
   }
 }
+

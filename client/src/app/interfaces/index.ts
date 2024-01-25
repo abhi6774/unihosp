@@ -1,6 +1,6 @@
 /**
  * Model User
- * 
+ *
  */
 export type User = {
   id: string
@@ -17,7 +17,7 @@ export type User = {
 
 /**
  * Model RefreshTokens
- * 
+ *
  */
 export type RefreshTokens = {
   id: string
@@ -29,7 +29,7 @@ export type RefreshTokens = {
 
 /**
  * Model Hospital
- * 
+ *
  */
 export type Hospital = {
   id: string
@@ -53,7 +53,7 @@ export type Doctor = {
 
 /**
  * Model History
- * 
+ *
  */
 export type History = {
   id: string
@@ -66,7 +66,7 @@ export type History = {
 
 /**
  * Model Patient
- * 
+ *
  */
 export type Patient = {
   id: string
@@ -95,7 +95,7 @@ export type BloodGroupType = (typeof BloodGroupType)[keyof typeof BloodGroupType
 
 /**
  * Model Documents
- * 
+ *
  */
 export type Documents = {
   id: string
@@ -109,7 +109,7 @@ export type Documents = {
 
 /**
  * Model Appointments
- * 
+ *
  */
 export type Appointments = {
   id: string
@@ -125,7 +125,7 @@ export type Appointments = {
 
 /**
  * Model Preferences
- * 
+ *
  */
 export type Preferences = {
   id: string
@@ -137,7 +137,7 @@ export type Preferences = {
 
 /**
  * Model Notification
- * 
+ *
  */
 export type Notification = {
   id: string
@@ -153,7 +153,7 @@ export type Notification = {
 
 /**
  * Model VerificationMailRequest
- * 
+ *
  */
 export type VerificationMailRequest = {
   id: string
@@ -178,3 +178,5 @@ export const Role = {
 };
 
 export type Role = (typeof Role)[keyof typeof Role]
+
+

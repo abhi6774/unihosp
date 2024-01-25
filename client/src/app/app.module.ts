@@ -1,7 +1,7 @@
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
 import { RouterModule, Routes } from '@angular/router';
 
 import { UniDirectivesModule } from 'src/app/directives/unidirectives.module';
@@ -27,42 +27,43 @@ import { UserService } from './services/user.service';
 
 
 @NgModule({
-    declarations: [
-        AppComponent,
-        AboutComponent,
-        CreateprofileComponent,
-        LandingPageComponent,
-        ErrorComponent,
-        FeedbackComponent,
-    ],
-    imports: [
-        BrowserModule,
-        DashboardModule,
-        TopbarModule,
-        SidebarModule,
-        HttpClientModule,
-        AuthenticationModule,
-        ReactiveFormsModule,
-        FormsModule,
-        UniDirectivesModule,
-        AddDocumentsModule,
-        LoadingModule,
-        ValidatorsModule,
-        RouterModule.forRoot(routes),
-    ],
-    schemas: [
-        CUSTOM_ELEMENTS_SCHEMA
-    ],
-    providers: [
-        NotificationService,
-        ProfileService,
-        UserService,
-        {
-            provide: HTTP_INTERCEPTORS,
-            useClass: RequestsInterceptor,
-            multi: true,
-        }
-    ],
-    bootstrap: [AppComponent],
+  declarations: [
+    AppComponent,
+    AboutComponent,
+    CreateprofileComponent,
+    LandingPageComponent,
+    ErrorComponent,
+    FeedbackComponent,
+  ],
+  imports: [
+    BrowserModule,
+    DashboardModule,
+    TopbarModule,
+    SidebarModule,
+    HttpClientModule,
+    AuthenticationModule,
+    ReactiveFormsModule,
+    FormsModule,
+    UniDirectivesModule,
+    AddDocumentsModule,
+    LoadingModule,
+    ValidatorsModule,
+    RouterModule.forRoot(routes),
+  ],
+  schemas: [
+    CUSTOM_ELEMENTS_SCHEMA
+  ],
+  providers: [
+    NotificationService,
+    ProfileService,
+    UserService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: RequestsInterceptor,
+      multi: true,
+    },
+    provideClientHydration()
+  ],
+  bootstrap: [AppComponent],
 })
 export class AppModule { }

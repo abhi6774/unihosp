@@ -97,22 +97,40 @@ export class HospitalService {
     })
   }
 
-  getHospitalById(input: Prisma.HospitalWhereUniqueInput) {
-    return this.prismaService.hospital.findUnique({
-      where: {
-        id: input.id,
-        handle: input.handle,
-      },
-      include: {
-        doctor: true,
-        allowedPatientProfiles: true,
-        Appointments: true
+  async getHospitalById(input: Prisma.HospitalWhereUniqueInput) {
+    try {
+      const result = await this.prismaService.hospital.findUnique({
+        where: {
+          id: input.id,
+          handle: input.handle,
+        },
+        include: {
+          doctor: true,
+          coordinates: true,
+          admins: true,
+        }
+      })
+
+      const response = {
+        name: result.name,
+        handle: result.handle,
+        coordinates: {
+          latitude: result.coordinates.latitude,
+          longitude: result.coordinates.longitude
+        },
+        doctor: result.doctor,
+        location: result.location,
+        createdAt: result.createdAt,
+        updatedAt: result.updatedAt,
+        admins: result.admins,
       }
-    }).catch((err) => {
+
+      return response
+    } catch (err) {
       return {
-        "message": "Something Went wrong"
+        message: JSON.stringify(err)
       }
-    })
+    }
   }
 
   updateHospital(where: Prisma.HospitalWhereUniqueInput, data: Prisma.HospitalUpdateInput) {
