@@ -1,5 +1,5 @@
 -- CreateEnum
-CREATE TYPE "Role" AS ENUM ('Patient', 'Doctor', 'Admin');
+CREATE TYPE "Role" AS ENUM ('Patient', 'Doctor', 'Admin', 'SuperAdmin');
 
 -- CreateTable
 CREATE TABLE "User" (
@@ -14,8 +14,39 @@ CREATE TABLE "User" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3),
     "verified" BOOLEAN NOT NULL DEFAULT false,
+    "userHospitalOwnerId" TEXT,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Hospital" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "handle" TEXT NOT NULL,
+    "location" TEXT,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3),
+    "userHospitalOwnerId" TEXT NOT NULL,
+
+    CONSTRAINT "Hospital_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "UserHospitalAdmin" (
+    "userId" TEXT NOT NULL,
+    "hospitalId" TEXT NOT NULL,
+
+    CONSTRAINT "UserHospitalAdmin_pkey" PRIMARY KEY ("userId","hospitalId")
+);
+
+-- CreateTable
+CREATE TABLE "UserHospitalOwner" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "hospitalId" TEXT NOT NULL,
+
+    CONSTRAINT "UserHospitalOwner_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -27,18 +58,6 @@ CREATE TABLE "RefreshTokens" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "RefreshTokens_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "Hospital" (
-    "id" TEXT NOT NULL,
-    "name" TEXT NOT NULL,
-    "handle" TEXT NOT NULL,
-    "location" TEXT,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3),
-
-    CONSTRAINT "Hospital_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -208,6 +227,12 @@ CREATE TABLE "_HospitalToPatient" (
 );
 
 -- CreateTable
+CREATE TABLE "_HospitalToUser" (
+    "A" TEXT NOT NULL,
+    "B" TEXT NOT NULL
+);
+
+-- CreateTable
 CREATE TABLE "_DoctorToPatient" (
     "A" TEXT NOT NULL,
     "B" TEXT NOT NULL
@@ -218,6 +243,9 @@ CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Hospital_handle_key" ON "Hospital"("handle");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "UserHospitalOwner_userId_hospitalId_key" ON "UserHospitalOwner"("userId", "hospitalId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Coordinates_hospitalId_key" ON "Coordinates"("hospitalId");
@@ -259,10 +287,28 @@ CREATE UNIQUE INDEX "_HospitalToPatient_AB_unique" ON "_HospitalToPatient"("A", 
 CREATE INDEX "_HospitalToPatient_B_index" ON "_HospitalToPatient"("B");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "_HospitalToUser_AB_unique" ON "_HospitalToUser"("A", "B");
+
+-- CreateIndex
+CREATE INDEX "_HospitalToUser_B_index" ON "_HospitalToUser"("B");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "_DoctorToPatient_AB_unique" ON "_DoctorToPatient"("A", "B");
 
 -- CreateIndex
 CREATE INDEX "_DoctorToPatient_B_index" ON "_DoctorToPatient"("B");
+
+-- AddForeignKey
+ALTER TABLE "User" ADD CONSTRAINT "User_userHospitalOwnerId_fkey" FOREIGN KEY ("userHospitalOwnerId") REFERENCES "UserHospitalOwner"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Hospital" ADD CONSTRAINT "Hospital_userHospitalOwnerId_fkey" FOREIGN KEY ("userHospitalOwnerId") REFERENCES "UserHospitalOwner"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "UserHospitalAdmin" ADD CONSTRAINT "UserHospitalAdmin_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "UserHospitalAdmin" ADD CONSTRAINT "UserHospitalAdmin_hospitalId_fkey" FOREIGN KEY ("hospitalId") REFERENCES "Hospital"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "RefreshTokens" ADD CONSTRAINT "RefreshTokens_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -320,6 +366,12 @@ ALTER TABLE "_HospitalToPatient" ADD CONSTRAINT "_HospitalToPatient_A_fkey" FORE
 
 -- AddForeignKey
 ALTER TABLE "_HospitalToPatient" ADD CONSTRAINT "_HospitalToPatient_B_fkey" FOREIGN KEY ("B") REFERENCES "Patient"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "_HospitalToUser" ADD CONSTRAINT "_HospitalToUser_A_fkey" FOREIGN KEY ("A") REFERENCES "Hospital"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "_HospitalToUser" ADD CONSTRAINT "_HospitalToUser_B_fkey" FOREIGN KEY ("B") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "_DoctorToPatient" ADD CONSTRAINT "_DoctorToPatient_A_fkey" FOREIGN KEY ("A") REFERENCES "Doctor"("id") ON DELETE CASCADE ON UPDATE CASCADE;

@@ -24,12 +24,10 @@ export class AccessTokenGuard implements CanActivate {
     else {
       this.logger.debug(`Validating`);
       const authorization = `unihosp ${request.cookies["accessToken"]}`;
-      console.log("Authorization", authorization)
-      // return false
       const user = authorization ? this.validate(authorization) : undefined;
       this.logger.log(user)
       if (!user) return false;
-      request["user"] = user;
+      request.body["user"] = user;
       return true
     }
   }

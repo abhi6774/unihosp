@@ -1,11 +1,14 @@
 import { Body, Controller, Delete, Get, Logger, Patch, Post, Query, UseGuards } from '@nestjs/common';
-import Roles from './metadata/roles.metadata';
+import Roles from '../metadata/roles.metadata';
 import { HospitalService } from './services/hospital.service';
-import { Hospital, Prisma } from '@prisma/client';
+import { Hospital, Prisma, Role, User } from '@prisma/client';
 import { CreateHospitalInput, CreateMultipleHospitalInput } from 'src/interfaces/hospital';
+import { AccessTokenGuard } from 'src/guards/accesstoken.guard';
+import { HospitalGuard } from './guard/hospital.guard';
 
 
-@Roles('Admin')
+@Roles("SuperAdmin", "Admin")
+@UseGuards(AccessTokenGuard, HospitalGuard)
 @Controller('hospital')
 export class HospitalController {
 
@@ -14,16 +17,17 @@ export class HospitalController {
   constructor(private hospitalService: HospitalService) { }
 
   @Post()
-  createHospital(@Body() data: CreateHospitalInput) {
+  createHospital(@Body() data: CreateHospitalInput, @Body("user") user: User) {
     return this.hospitalService.createOneHospital({
       ...data,
-      handle: data.handle || this.generateHandle(data.name)
+      handle: data.handle || this.generateHandle(data.name),
+      ownerId: user.id
     })
   }
 
   @Post("/multi")
-  createHospitals(@Body() data: CreateMultipleHospitalInput) {
-    return this.hospitalService.createManyHospital(data);
+  createHospitals(@Body() data: CreateMultipleHospitalInput, @Body("user") user: User) {
+    return this.hospitalService.createManyHospital(data, user.id);
   }
 
   @Patch()

@@ -49,7 +49,7 @@ export class AuthService {
 
     this.logger.log(JSON.stringify(userDetailsWithoutPassword));
 
-    const detailsToCreateToken = { id: userDetailsWithoutPassword.id, email: userDetailsWithoutPassword.email };
+    const detailsToCreateToken = { id: userDetailsWithoutPassword.id, email: userDetailsWithoutPassword.email, role: userDetailsWithoutPassword.role };
 
     const accessToken = this.generateToken(detailsToCreateToken);
     const refreshToken = this.generateToken(detailsToCreateToken, TokenType.RefreshToken);

@@ -15,7 +15,7 @@ export class HospitalGuard implements CanActivate {
   canActivate(
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
-    const role = this.reflector.get<Role>('role', context.getClass());
+    const role = this.reflector.get<Role[]>('role', context.getClass());
 
     const request: Request = context.switchToHttp().getRequest();
     const user: User = request.body['user'];
@@ -24,8 +24,8 @@ export class HospitalGuard implements CanActivate {
     this.logger.debug(`Matching roles: ${this.matchRoles(role, user.role)}`)
     return this.matchRoles(role, user.role)
   }
-  private matchRoles(roles: Role, userRole: Role) {
-    return roles === userRole;
+  private matchRoles(roles: Role[], userRole: Role) {
+    return roles.includes(userRole);
   }
 
 }

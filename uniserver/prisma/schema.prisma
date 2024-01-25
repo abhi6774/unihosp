@@ -8,7 +8,7 @@ datasource db {
 }
 
 model User {
-  id                String              @id @default(uuid())
+  id                String              @id @default(cuid())
   email             String              @unique
   password          String
   name              String?
@@ -29,10 +29,11 @@ model User {
   Notification      Notification[]
   hospitals         Hospital[]
   UserHospitalAdmin UserHospitalAdmin[]
+  userHospitalOwner UserHospitalOwner[]
 }
 
 model Hospital {
-  id                     String              @id @default(uuid())
+  id                     String              @id @default(cuid())
   name                   String
   handle                 String              @unique
   location               String?
@@ -44,6 +45,7 @@ model Hospital {
   updatedAt              DateTime?
   coordinates            Coordinates?
   UserHospitalAdmin      UserHospitalAdmin[]
+  userHospitalOwner      UserHospitalOwner?
 }
 
 model UserHospitalAdmin {
@@ -56,8 +58,17 @@ model UserHospitalAdmin {
   @@id([userId, hospitalId])
 }
 
+model UserHospitalOwner {
+  id String @id @default(cuid())
+
+  userId     String
+  hospitalId String   @unique
+  user       User     @relation(fields: [userId], references: [id])
+  hospital   Hospital @relation(fields: [hospitalId], references: [id])
+}
+
 model RefreshTokens {
-  id        String   @id @default(uuid())
+  id        String   @id @default(cuid())
   user      User     @relation(fields: [userId], references: [id])
   userId    String
   authToken Bytes
@@ -92,7 +103,7 @@ model Patient {
 }
 
 model Doctor {
-  id                     String         @id @default(uuid())
+  id                     String         @id @default(cuid())
   fName                  String
   lName                  String
   hospital               Hospital       @relation(fields: [hospitalId], references: [id])
@@ -120,7 +131,7 @@ model History {
 }
 
 model Documents {
-  id        String    @id @default(uuid())
+  id        String    @id @default(cuid())
   name      String
   type      String
   buffer    Bytes
@@ -142,7 +153,7 @@ model Avatars {
 }
 
 model Appointments {
-  id              String    @id @default(uuid())
+  id              String    @id @default(cuid())
   appointmentDate DateTime
   patient         Patient   @relation(fields: [patientId], references: [id])
   patientId       String
@@ -156,7 +167,7 @@ model Appointments {
 }
 
 model Preferences {
-  id                  String    @id @default(uuid())
+  id                  String    @id @default(cuid())
   owner               User      @relation(fields: [userId], references: [id])
   userId              String    @unique
   notificationAllowed Boolean   @default(false)
@@ -165,7 +176,7 @@ model Preferences {
 }
 
 model Notification {
-  id          String    @id @default(uuid())
+  id          String    @id @default(cuid())
   title       String
   description String
   createAt    DateTime  @default(now())

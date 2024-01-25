@@ -12,7 +12,6 @@ export class HospitalService {
 
   async createOneHospital(input: CreateHospitalInput) {
     const handle = input.handle || await this.createHandle(input.name);
-    this.logger.log(handle)
     return this.prismaService.hospital.create({
       data: {
         name: input.name,
@@ -20,7 +19,16 @@ export class HospitalService {
           create: input.coordinates
         },
         handle,
-        location: input.location
+        location: input.location,
+        userHospitalOwner: {
+          create: {
+            user: {
+              connect: {
+                id: input.ownerId
+              }
+            },
+          }
+        }
       },
       include: {
         coordinates: {
@@ -34,7 +42,7 @@ export class HospitalService {
   }
 
   async createHandle(name: string, count = 0): Promise<string> {
-    // Validate input parameters
+
     if (typeof name !== 'string' || typeof count !== 'number') {
       throw new Error('Invalid input parameters');
     }
@@ -59,11 +67,14 @@ export class HospitalService {
   }
 
 
-  async createManyHospital(inputs: CreateMultipleHospitalInput) {
+  async createManyHospital(inputs: CreateMultipleHospitalInput, ownerId?: string) {
 
     let totalCreated = 0
 
     for (let hospital of inputs) {
+      if (!hospital.ownerId) {
+        hospital.ownerId = ownerId
+      }
       await this.createOneHospital(hospital);
       totalCreated++;
     }
