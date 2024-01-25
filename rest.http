@@ -1,0 +1,26 @@
+@baseurl = http://localhost:3000/api/v1
+
+### Signup
+POST {{baseurl}}/auth/signup
+Content-Type: application/json
+app-id: eba833927e93be1e8da25766c67f5ef8
+
+{
+    "email": "abhishekmourya6774@gmail.com",
+    "password": "jdlhsfa9832",
+    "contact": "4298422345"
+}
+
+
+### Login
+POST {{baseurl}}/auth/login
+Content-Type: application/json
+app-id: eba833927e93be1e8da25766c67f5ef8
+
+{
+    "email": "abhishekmourya6774@gmail.com",
+    "password": "jdlhsfa9832"
+}
+
+
+###

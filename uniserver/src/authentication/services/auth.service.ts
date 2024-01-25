@@ -87,7 +87,7 @@ export class AuthService {
 
   private generateToken(user: any, tokenType: TokenType = TokenType.AccessToken) {
     this.logger.debug(`Access token expire: ${this.configService.get('ACCESS_TOKEN_EXPIRATION')}`);
-    this.logger.debug(`Refresh token expire: ${this.configService.get('ACCESS_TOKEN_EXPIRATION')}`);
+    this.logger.debug(`Refresh token expire: ${this.configService.get('REFRESH_TOKEN_EXPIRATION')}`);
     switch (tokenType) {
       case TokenType.AccessToken:
         return this.jwtService.sign(user, {

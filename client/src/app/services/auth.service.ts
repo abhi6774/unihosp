@@ -45,7 +45,6 @@ export class AuthService {
   }
 
   get isLoggedIn(): boolean {
-
     return this.userService.currentUser === null;
   }
 
