@@ -10,59 +10,65 @@ export class HospitalService {
 
   constructor(private readonly prismaService: PrismaService) { }
 
-  createOneHospital(input: CreateHospitalInput) {
+  async createOneHospital(input: CreateHospitalInput) {
+    const handle = input.handle || await this.createHandle(input.name);
+    this.logger.log(handle)
     return this.prismaService.hospital.create({
       data: {
         name: input.name,
         coordinates: {
           create: input.coordinates
         },
-        handle: input.handle,
+        handle,
         location: input.location
       },
       include: {
-        coordinates: true
+        coordinates: {
+          select: {
+            latitude: true,
+            longitude: true
+          }
+        }
       }
     });
   }
 
   async createHandle(name: string, count = 0): Promise<string> {
-    const splittedName = name.split(" ");
-    const generated = "@" + splittedName.map(v => v.slice(-3 - count)).join("")
-    const alreadyThere = await this.prismaService.hospital.findUnique({ where: { handle: generated } });
-    if (alreadyThere) {
-      return this.createHandle(name, - count);
+    // Validate input parameters
+    if (typeof name !== 'string' || typeof count !== 'number') {
+      throw new Error('Invalid input parameters');
     }
+
+    const splittedName = name.split(" ");
+    const generated = "@" + splittedName.map(v => v.slice(-3 - count)).join("");
+
+    // Check for handle uniqueness
+    const alreadyExists = await this.isHandleExists(generated);
+    if (alreadyExists) {
+      // If handle already exists, recursively call with a decremented count
+      return this.createHandle(name, count - 1);
+    }
+
     return generated;
   }
 
+  async isHandleExists(handle: string): Promise<boolean> {
+    // Check if the handle already exists in the database
+    const existingHospital = await this.prismaService.hospital.findUnique({ where: { handle } });
+    return !!existingHospital;
+  }
+
+
   async createManyHospital(inputs: CreateMultipleHospitalInput) {
 
-    // for (const input of inputs) {
-    //   let handle = "";
-    //   if (!input.handle) {
-    //     handle = await this.createHandle(input.name);
-    //   }
-    //   data.push({ ...input, handle });
-    // }
+    let totalCreated = 0
 
-
-    // return this.prismaService.hospital.createMany({
-    //   data: [],
-    //   skipDuplicates: true
-    // }).catch((err) => ({
-    //   message: err.message
-    // }));
-
-    this.prismaService.hospital.createMany
-    const resposne = {
-      totalCreated: 0,
+    for (let hospital of inputs) {
+      await this.createOneHospital(hospital);
+      totalCreated++;
     }
-    inputs.forEach((value) => {
-      this.createOneHospital(value)
-      resposne.totalCreated++;
-    })
-    return resposne
+
+    return { totalCreated };
   }
 
   getHospitals(input: Prisma.HospitalWhereInput) {

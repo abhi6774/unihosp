@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Logger, Post, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Logger, Patch, Post, Query, UseGuards } from '@nestjs/common';
 import Roles from './metadata/roles.metadata';
 import { HospitalService } from './services/hospital.service';
 import { Hospital, Prisma } from '@prisma/client';
@@ -26,10 +26,8 @@ export class HospitalController {
     return this.hospitalService.createManyHospital(data);
   }
 
-  @Post()
-  updateHospital() {
-
-  }
+  @Patch()
+  updateHospital() { }
 
   @Get()
   async getHospital(@Body() data?: { id?: string, handle?: string }, @Query("q") query?: string) {
@@ -64,27 +62,6 @@ export class HospitalController {
       }
     }
   }
-
-  // @Get("all")
-  // getHospitals(@Query("q") query?: string) {
-  //   this.logger.debug(`Query: ${query}`);
-  //   if (query)
-  //     return this.hospitalService.getHospitals({
-  //       OR: [
-  //         {
-  //           handle: { contains: query }
-  //         },
-  //         {
-  //           name: { contains: query }
-  //         },
-  //         {
-  //           location: { contains: query }
-  //         }
-  //       ]
-  //     })
-  //   else
-  //     return this.hospitalService.getHospitals({});
-  // }
 
   private generateHandle(name: string): string {
     const splittedName = name.split(" ");

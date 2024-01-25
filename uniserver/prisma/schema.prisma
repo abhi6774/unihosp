@@ -8,25 +8,52 @@ datasource db {
 }
 
 model User {
-  id            String          @id @default(uuid())
-  email         String          @unique
-  password      String
-  name          String?
-  contact       String?
-  avatarUrl     String?
-  country       String?
-  role          Role            @default(Patient)
-  patient       Patient?
-  doctor        Doctor?
-  refreshTokens RefreshTokens[]
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime?
-  preferences   Preferences?
-  verified      Boolean         @default(false)
-  History       History?
-  Avatars       Avatars?
-  ChatRoom      ChatRoom[]
-  Notification  Notification[]
+  id                String              @id @default(uuid())
+  email             String              @unique
+  password          String
+  name              String?
+  contact           String?
+  avatarUrl         String?
+  country           String?
+  role              Role                @default(Patient)
+  patient           Patient?
+  doctor            Doctor?
+  refreshTokens     RefreshTokens[]
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime?
+  preferences       Preferences?
+  verified          Boolean             @default(false)
+  History           History?
+  Avatars           Avatars?
+  ChatRoom          ChatRoom[]
+  Notification      Notification[]
+  hospitals         Hospital[]
+  UserHospitalAdmin UserHospitalAdmin[]
+}
+
+model Hospital {
+  id                     String              @id @default(uuid())
+  name                   String
+  handle                 String              @unique
+  location               String?
+  doctor                 Doctor[]
+  allowedPatientProfiles Patient[]
+  admins                 User[]
+  Appointments           Appointments[]
+  createdAt              DateTime            @default(now())
+  updatedAt              DateTime?
+  coordinates            Coordinates?
+  UserHospitalAdmin      UserHospitalAdmin[]
+}
+
+model UserHospitalAdmin {
+  userId     String
+  hospitalId String
+
+  user     User     @relation(fields: [userId], references: [id])
+  hospital Hospital @relation(fields: [hospitalId], references: [id])
+
+  @@id([userId, hospitalId])
 }
 
 model RefreshTokens {
@@ -36,19 +63,6 @@ model RefreshTokens {
   authToken Bytes
   expireIn  DateTime
   createdAt DateTime @default(now())
-}
-
-model Hospital {
-  id                     String         @id @default(uuid())
-  name                   String
-  handle                 String         @unique
-  location               String?
-  doctor                 Doctor[]
-  allowedPatientProfiles Patient[]
-  Appointments           Appointments[]
-  createdAt              DateTime       @default(now())
-  updatedAt              DateTime?
-  coordinates            Coordinates?
 }
 
 model Coordinates {
@@ -181,6 +195,7 @@ enum Role {
   Patient
   Doctor
   Admin
+  SuperAdmin
 }
 
 model Logs {
