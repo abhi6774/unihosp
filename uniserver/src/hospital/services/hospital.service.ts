@@ -36,6 +36,15 @@ export class HospitalService {
             latitude: true,
             longitude: true
           }
+        },
+        userHospitalOwner: {
+          include: {
+            user: {
+              select: {
+                id: true,
+              }
+            }
+          }
         }
       }
     });
