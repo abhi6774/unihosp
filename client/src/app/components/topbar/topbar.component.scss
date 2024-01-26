@@ -129,6 +129,9 @@ uni-searchbar {
 }
 
 @media screen and (width < 535px) {
+  .navbar{
+    width: 100vw;
+  }
   .logo0 {
     font-size: 1.5rem;
   }

@@ -4,8 +4,8 @@
       <div class="ap-lgo">
         <a href="/" class="logo0">Uni<span>Hosp</span></a>
       </div>
-      <div class="outlet" [@routerAnimation]="switchPage(outlet)" style="width: 100%;">
-        <router-outlet #outlet="outlet"></router-outlet>
+      <div class="outlet" [@routerAnimation]="switchPage(outlet)">
+        <router-outlet class="outlet" #outlet="outlet"></router-outlet>
       </div>
     </div>
   </div>

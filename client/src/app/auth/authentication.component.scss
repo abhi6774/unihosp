@@ -33,9 +33,13 @@
   // width: clamp(300px, 90%, 400px);
 }
 
+.outlet{
+  width: 100% !important;
+}
+
 .glass {
   height: initial;
-  width: 100%;
+  width: 37.5vw;
   background-color: #ecf0f3;
   margin-top: 100px;
   padding: 1.5rem 2.5rem;
@@ -79,4 +83,16 @@
 
 button[type="submit"] {
   cursor: pointer;
+}
+
+@media screen and (max-width: 750px) {
+  .glass {
+    width: 50vw;
+  }
+}
+
+@media screen and (max-width: 535px) {
+  .glass {
+    width: 80vw;
+  }
 }
