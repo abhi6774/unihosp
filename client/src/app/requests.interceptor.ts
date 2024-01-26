@@ -14,7 +14,7 @@ import UniCookieService from './services/unicookie.service';
 @Injectable()
 export class RequestsInterceptor implements HttpInterceptor {
 
-  private readonly rootEndPoint = `http://localhost:3000/api/v1`;
+  private readonly rootEndPoint = `https://api.unihosp.live`;
 
   constructor(private router: Router) { }
 

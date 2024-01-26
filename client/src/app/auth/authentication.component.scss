@@ -39,10 +39,10 @@
 
 .glass {
   height: initial;
-  width: 37.5vw;
+  width: 32.5vw;
   background-color: #ecf0f3;
   margin-top: 100px;
-  padding: 1.5rem 2.5rem;
+  padding: 1.5rem 2rem;
   border-radius: 1.5rem;
   box-shadow: 20px 20px 20px #cbced1,
     -20px -20px 20px rgba(255, 255, 255, 0.699);
@@ -85,6 +85,12 @@ button[type="submit"] {
   cursor: pointer;
 }
 
+@media screen and (max-width: 1000px){
+  .glass{
+    width: 37.5vw;
+  }
+}
+
 @media screen and (max-width: 750px) {
   .glass {
     width: 50vw;
@@ -93,6 +99,6 @@ button[type="submit"] {
 
 @media screen and (max-width: 535px) {
   .glass {
-    width: 80vw;
+    width: 85vw;
   }
 }
