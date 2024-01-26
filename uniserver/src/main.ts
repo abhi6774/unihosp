@@ -3,6 +3,7 @@ import * as cookieParser from 'cookie-parser';
 import { AppModule } from './app.module';
 import { SocketIOAdapter } from './socketServices/socket.adapter';
 
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
@@ -15,6 +16,8 @@ async function bootstrap() {
       'http://localhost:3020',
       'http://localhost:5500',
       'http://127.0.0.1:5500',
+      'https://unihosp.live',
+      'http://unihosp.live',
     ],
     credentials: true
   })
