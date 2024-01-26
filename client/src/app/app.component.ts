@@ -14,9 +14,7 @@ export class AppComponent implements OnInit {
 
   constructor(private userService: UserService, private router: Router,
     // private notification: NotificationService
-  ) {
-
-  }
+  ) { }
 
   value = ""
 

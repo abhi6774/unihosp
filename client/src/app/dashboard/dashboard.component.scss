@@ -11,8 +11,8 @@
   grid-template-columns: 60px calc(100% - 60px);
   gap: 10px;
 }
- 
-uni-atp {
+
+uni-topbar {
   grid-area: topbar;
 }
 
@@ -31,18 +31,19 @@ utp-sde {
   margin-bottom: 2rem;
 }
 
-@media screen and (width < 535px){
-  .ctn{
+@media screen and (width < 535px) {
+  .ctn {
     margin: 1rem;
     margin-bottom: 1rem !important;
     padding: 0;
     height: auto;
     position: absolute;
-    left:0;
+    left: 0;
     top: 65px;
-    right:0;
+    right: 0;
   }
-  .dashboard-container{
+
+  .dashboard-container {
     grid-template-columns: 60px calc(100% - 80px);
   }
-} 
+}

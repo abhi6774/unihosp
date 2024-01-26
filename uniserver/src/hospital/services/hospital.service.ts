@@ -125,6 +125,8 @@ export class HospitalService {
         admins: result.admins,
       }
 
+      type ResponseType = typeof response
+
       return response
     } catch (err) {
       return {
