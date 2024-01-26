@@ -44,7 +44,9 @@ export class PatientService {
           }
         }
       }
-    }).catch((err) => ({ err: 401, message: 'Profile Already Exists' }))
+    }).catch((err) => {
+      return ({ err: 401, errMessage: err, message: 'Profile Already Exists' })
+    })
   }
 
   async exists(handle?: string) {
@@ -62,12 +64,14 @@ export class PatientService {
   }
 
 
-  findPatientProfile(data: { id?: string, handle?: string, userId: string }) {
+  findPatientProfile(data: { id?: string, handle?: string, userId?: string }) {
     const include = {
       owner: false,
       allowedDoctors: true,
       allowedHospitals: true,
     }
+
+    this.logger.debug("Patient ID: " + data.id);
     return this.prismaService.patient.findUnique({
       where: {
         id: data.id,

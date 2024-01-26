@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Subject, filter, map, of, take } from 'rxjs';
+import { BehaviorSubject, map, of } from 'rxjs';
 import { User } from '../interfaces';
 
 @Injectable({
@@ -12,7 +12,7 @@ export class UserService {
 
   get currentUser() {
     return this.user.pipe(
-      map(user => (user ? { ...user, avatarUrl: user?.avatarUrl ? `http://localhost:3000/api/v1${user?.avatarUrl}` : undefined } : user)));
+      map(user => (user ? { ...user, avatarUrl: user?.avatarUrl ? `https://api.unihosp.live/api/v1${user?.avatarUrl}` : undefined } : user)));
   }
 
   setCurrentUser(user: User) {

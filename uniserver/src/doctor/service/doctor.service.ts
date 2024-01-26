@@ -40,7 +40,7 @@ export class DoctorService {
         Appointments: true,
         hospital: true,
         notification: true
-      }
+      },
     }).catch((reason) => ({
       message: reason
     }));

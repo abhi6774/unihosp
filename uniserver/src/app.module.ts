@@ -30,6 +30,7 @@ import { NotifierService } from './socketServices/notifier/service/notifier.serv
 import { UserService } from './user/user.service';
 import { UserController } from './user/user.controller';
 import { UserModule } from './user/user.module';
+import { EController } from './e/e.controller';
 
 
 
@@ -61,6 +62,7 @@ import { UserModule } from './user/user.module';
     AvatarsController,
     DoctorController,
     SearchController,
+    EController,
   ],
   providers: [
     PrismaService,
