@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { map, tap } from 'rxjs';
+import { Observable, map, tap } from 'rxjs';
 import { User } from 'src/app/interfaces';
 import { UserService } from 'src/app/services/user.service';
 import { AccessTokenResponse, LoginResponse, LogoutResponse } from '../auth/interfaces';
@@ -26,12 +26,11 @@ export class AuthService {
     });
   }
 
-
-  async requestAccessToken() {
-    const response = await fetch("http://localhost:3000/auth/accesstoken", {
-      method: 'POST',
-    });
-  }
+  // async requestAccessToken() {
+  //   const response = await fetch("https://api.unihosp.live/auth/accesstoken", {
+  //     method: 'POST',
+  //   });
+  // }
 
   login(email: string, password: string) {
     const response = this.http.post<LoginResponse>(`/auth/login`, {
@@ -44,8 +43,12 @@ export class AuthService {
     }));
   }
 
-  get isLoggedIn(): boolean {
-    return this.userService.currentUser === null;
+  get isLoggedIn(): Observable<boolean> {
+    return this.userService.currentUser.pipe(map((user) => user !== null));
+  }
+
+  get notLoggedIn(): Observable<boolean> {
+    return this.userService.currentUser.pipe(map(user => user === null));
   }
 
   logout() {

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, of } from 'rxjs';
+import { BehaviorSubject, map, of } from 'rxjs';
 import { BloodGroupType, Patient, User } from '../interfaces';
 
 @Injectable({
@@ -8,16 +8,21 @@ import { BloodGroupType, Patient, User } from '../interfaces';
 })
 export class ProfileService {
 
-  constructor(private http: HttpClient) {
-    this.http.get<Patient>("/patient/user").subscribe((patient) => {
-      this.currentProfile.next(patient);
-    })
-  }
+  constructor(private http: HttpClient) { }
 
   private currentProfile = new BehaviorSubject<Patient | null>(null);
 
   get current() {
-    return this.currentProfile;
+    return this.currentProfile.pipe(map(patient => {
+      if (patient !== null) return patient;
+      let p: Patient;
+      const sub = this.http.get<Patient>("/patient/user").subscribe(patient => {
+        p = patient;
+        this.profile = patient;
+        sub.unsubscribe();
+      });
+      return p!;
+    }));
   }
 
   set profile(profile: Patient) {

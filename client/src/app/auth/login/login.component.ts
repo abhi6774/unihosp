@@ -53,6 +53,7 @@ export class LoginComponent implements OnInit {
       this.loading = true;
       this.authService.login(formValue['email'], formValue['password']).subscribe(data => {
         this.loading = false;
+        this.router.navigate(["/dashboard"]);
       });
     }
   }

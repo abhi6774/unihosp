@@ -71,7 +71,7 @@ export class PatientService {
       allowedHospitals: true,
     }
 
-    this.logger.debug("Patient ID: " + data.id);
+    this.logger.debug("Patient ID: " + JSON.stringify(data));
     return this.prismaService.patient.findUnique({
       where: {
         id: data.id,
