@@ -68,3 +68,12 @@
   z-index: 1000;
   background: rgba(255, 0, 0, 0);
 }
+
+
+@media screen and (width < 535px){
+  .searchbar {
+    input {
+      height: 24px;
+    }
+  }
+}

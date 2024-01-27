@@ -24,7 +24,8 @@
 }
 
 .searchBar {
-  width: clamp(200px, 60%, 500px);
+  width: clamp(150px, 45%, 500px);
+  // width: clamp(30%, 45%, 60%);
 }
 
 .navright {
@@ -57,6 +58,24 @@ uni-searchbar {
   position: relative;
 }
 
+.ddark1{
+  color: var(--logo-color-2);
+  font-size: 1.3rem;
+  display: flex;
+  width: 40px;
+  height: 40px;
+  overflow: hidden;
+  align-items: center;
+  justify-content: flex-start;
+  box-sizing: border-box;
+  padding: 0 15px;
+  gap: 10px;
+  text-decoration: none;
+  transition: 500ms;
+  &:hover{
+    cursor: pointer;
+  }
+}
 .ddark0 {
   color: var(--logo-color-2);
   font-size: 1.3rem;
@@ -110,6 +129,15 @@ uni-searchbar {
   }
 }
 
+@media screen and (max-width: 750px) {
+  .navright{
+    gap: 2px;
+  }
+  .sociallogo{
+    font-size: 1.2rem;
+  }
+}
+
 @media screen and (max-width: 460px) {
   .navbar {
     padding: 0 10px;
@@ -132,14 +160,42 @@ uni-searchbar {
   .logo0 {
     font-size: 1.5rem;
   }
+  .ddark1{
+    padding: 0;
+  }
   .darkcontainer1 {
     display: none;
   }
   .darkcontainer {
     display: block;
-    margin-left: 1rem;
+    margin-left: 0;
   }
-
+  
+  .darkcontainer:nth-child(1), .darkcontainer:nth-child(2){
+    display: none;
+  }
+  .ddark1{
+    width: 20px;
+  }
+  .searchBar{
+    flex-grow: 1.5 !important;
+  }
+  .navright{
+    display: flex;
+    justify-content: end;
+  }
+  input::placeholder{
+    text-align: center;
+  }
+  .navbar{
+    height: 50px;
+  }
+  .navbar > div{
+      flex:1;
+  }
+  .logo0{
+    font-size: 1.1rem;
+  }
   .ddark0:hover {
     color: rgb(44, 148, 212) !important;
   }
@@ -180,3 +236,5 @@ uni-searchbar {
     }
   }
 }
+
+
