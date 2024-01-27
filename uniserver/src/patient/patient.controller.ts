@@ -36,7 +36,7 @@ export class PatientController {
 
   @Get('/user')
   async getPatientByUserID(@Req() req: Request) {
-    const user: User = req.body["user"]
+    const user: User = req["user"]
     return this.patientService.findPatientProfile({
       userId: user.id
     })
@@ -56,7 +56,7 @@ export class PatientController {
 
   @Post()
   createPatientProfile(@Req() req: Request, @Body() data: Prisma.PatientCreateInput) {
-    const user: User = req.body["user"];
+    const user: User = req["user"];
     console.log(user)
     return this.patientService.createPatientProfile({ ...data, ownerId: user.id });
   }

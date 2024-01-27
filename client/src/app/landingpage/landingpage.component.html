@@ -19,7 +19,6 @@
         <h1>UniHosp</h1>
         <h3>Welcomes you!</h3>
         <h6>"Empowering your health journey with cutting-edge technology."</h6>
-        {{user$ | async}}
         @if (!(user$ | async)) {
         <div class="signlogbtn">
           <a routerLink="/auth/login"><button class="loginbtn">Login</button></a>
