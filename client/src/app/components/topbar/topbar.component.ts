@@ -57,7 +57,7 @@ export class TopbarComponent implements OnInit {
 
   routes = [
     { routerLink: "/dashboard/welcome", title: "Home", icon: "fa-house", hovered: false },
-    { routerLink: "/dashboard/profile", title: "Profile", icon: "fa-user", hovered: false },
+    { routerLink: "/dashboard/profile", title: "Profile", icon: "fa-user", hovered: false, },
     { routerLink: "/dashboard/history", title: "History", icon: "fa-file", hovered: false },
     { routerLink: "/dashboard/hospital", title: "Hospitals", icon: "fa-hospital", hovered: false },
     { routerLink: "/dashboard/appointments", title: "Appointments", icon: "fa-calendar", hovered: false },
@@ -75,6 +75,7 @@ export class TopbarComponent implements OnInit {
 
   mouseOver(index: number) {
     this.routes[index].hovered = true;
+    this.closeSidebar();
   }
 
   mouseOverOut(index: number) {
