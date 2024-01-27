@@ -3,7 +3,7 @@ import { Routes } from "@angular/router";
 import { AboutComponent } from './aboutpage/about.component';
 import { AuthenticationComponent } from './auth/authentication.component';
 import { ForgotComponent } from './auth/forgot/forgot.component';
-import { LoggedInGuard } from './auth/guards/logged.guard';
+import { LoggedInGuard } from './guards/logged.guard';
 import { LoginComponent } from './auth/login/login.component';
 import { OtpComponent } from './auth/otp/otp.component';
 import { ResetPasswordComponent } from './auth/resetpassword/resetpassword.component';
@@ -20,7 +20,7 @@ import { ProfileComponent } from './dashboard/pages/profile/profile.component';
 import { ErrorComponent } from './error/error.component';
 import { CreaterpofileGuard } from './guards/createrpofile.guard';
 import { LandingPageComponent } from './landingpage/landingpage.component';
-import { LoginGuard } from "./guards/login.guard";
+import { PublicProfileComponent } from "./public-profile/public-profile.component";
 
 
 export const routes: Routes = [
@@ -32,13 +32,13 @@ export const routes: Routes = [
       { path: '', pathMatch: 'full', redirectTo: '/auth/login' },
       {
         path: 'signup',
-        canActivate: [LoginGuard],
+        canActivate: [LoggedInGuard],
         component: SignupComponent,
         data: { animation: "signup" }
       },
       {
         path: 'login',
-        canActivate: [LoginGuard],
+        canActivate: [LoggedInGuard],
         component: LoginComponent,
         data: { animation: "login" }
       },
@@ -52,7 +52,27 @@ export const routes: Routes = [
   {
     path: 'createprofile',
     component: CreateprofileComponent,
+    canActivate: [LoggedInGuard]
   },
+  // {
+  //   path: 'h/:id',
+  //   component: HospitalComponent,
+  // },
+  // {
+  //   path: 'p',
+  //   redirectTo: '',
+  //   pathMatch: 'full',
+  //   children: [
+  //     {
+  //       path: '/:id',
+  //       component: PublicProfileComponent
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: 'd/:id',
+  //   component: PublicProfileComponent,
+  // },
   {
     path: 'dashboard',
     canActivate: [],

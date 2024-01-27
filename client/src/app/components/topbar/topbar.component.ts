@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'uni-atp',
+  selector: 'uni-topbar',
   templateUrl: 'topbar.component.html',
   styleUrls: ["topbar.component.scss"]
 })

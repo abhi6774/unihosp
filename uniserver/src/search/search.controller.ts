@@ -5,7 +5,6 @@ import { AccessTokenGuard } from 'src/guards/accesstoken.guard';
 
 @Controller('search')
 @UseGuards(AppAccessGuard)
-@UseGuards(AccessTokenGuard)
 export class SearchController {
 
   private logger = new Logger(SearchController.name)
