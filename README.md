@@ -22,10 +22,6 @@ This service will work like UPI, Every Person will be given a Uni ID as we named
 
 ![](https://github.com/glxymesh/unihosp/blob/main/source/userflow.png)
 
-### Project Details
-
-![](https://github.com/glxymesh/unihosp/blob/main/source/project_structure.png)
-
 
 To view the currently deployed app [Click Here](https://unihosp.live)
 
@@ -75,22 +71,149 @@ In the uniserver main folder one is `prisma` and `src`
 4. Socket IO for notification services.
 5. Programming Languages - _Typescript/Javascript_
 6. Angular framework for frontend.
-7. Services Used - Twilio and Elastic Mail
+7. Services Used - Elastic Mail
 
 ---
 
 ## Conclusion
 
-This project is designed for the upcoming Solving For India project
-
 UniHosp is a revolutionary digital platform that aims to make healthcare accessible and convenient for patients and doctors. By providing patients with a centralised platform to manage their medical records, access medical services, and communicate with healthcare providers, UniHosp enables doctors to provide better care and improve patient outcomes. The use of advanced technologies such as Google Maps API, Socket.IO, and Angular framework, combined with the ease of use and convenience of the platform, makes UniHosp an ideal solution for addressing the challenges faced by the healthcare sector in India.
+
+---
+
+# Project Setup
+
+## Prerequisites
+
+Before you begin, ensure you have met the following requirements:
+
+- You have installed the latest version of [Node.js and npm](https://nodejs.org/en/download/)
+
+To Setup this project, follow these steps:
+
+1. Clone the repository:
+    ```bash
+    git clone https://github.com/abhi6774/unihosp.git
+    ```
+
+2. Navigate to the project directory:
+    ```bash
+    cd unihosp
+    ```
+### Server Setup
+
+## Setting Up Environment Variables
+
+This project requires certain environment variables to be set. Here's how you can set them up:
+
+1. In the root directory of the project inside the uniserver folder, create a new file and name it `.env`.
+
+2. Open the `.env` file and set the environment variables in this format:
+
+    ```bash
+    DATABASE_URL_ROOT=<your_postgres_database_url>
+    PRIVATE_TOKEN_KEY=<your_private_token_key>
+    JWT_REFRESH_EXPIRE=86400000
+    ACCESS_TOKEN_EXPIRATION=86400000
+    REFRESH_TOKEN_EXPIRATION=86400000
+    DEVELOPMENT_KEY=86dff15115508c9fb1da8c748740e753
+    BEARER=<bearer_name>
+    ```
+
+Replace `<your_database_url>` and `<your_private_token_key>` with your actual database URL and private token key.
+
+example your_private_token_key = 0eedfcd5776881153393943dc8a86478c100d58366ac277d84053703...
+
+3. Save the `.env` file and restart the server. The application will now have access to the values you set in the `.env` file.
+
+3. Install the dependencies:
+```bash
+cd uniserver && npm install
+```
+
+4. Prisma Generate
+
+```bash
+npx prisma migrate dev ---name dev
+npx prisma generate
+```
+
+5. Start Server
+
+```bash
+npm run start:dev        
+```
+
+## Docker Setup or Build
+
+If you want to use the docker directly
+
+You have two options to set up Docker for this project:
+
+```bash
+cd uniserver
+```
+
+1. **Build the Docker image locally:**
+
+    Use the following command to build the Docker image on your local machine:
+
+    ```bash
+    docker build . -t uniserver:latest \
+    --build-arg DATABASE_URL_ROOT=<your_postgres_database_url> \
+    --build-arg PRIVATE_TOKEN_KEY=<your_private_token_key> \
+    --build-arg JWT_REFRESH_EXPIRE=86400000 \
+    --build-arg ACCESS_TOKEN_EXPIRATION=86400000 \
+    --build-arg REFRESH_TOKEN_EXPIRATION=86400000 \
+    --build-arg DEVELOPMENT_KEY=86dff15115508c9fb1da8c748740e753 \
+    --build-arg BEARER=<bearer_name>
+    ```
+
+    Replace `<your_postgres_database_url>`, `<your_private_token_key>`, and `<bearer_name>` with your actual values.
+
+2. **Pull the Docker image from a registry:**
+
+    If the Docker image is available in a Docker registry, you can pull it using the following command:
+
+    ```bash
+    docker pull abhishek6774/uniserver:latest
+    ```
+
+3. **Running the Docker Container**
+
+    After you have either built the Docker image locally or pulled it from a registry, you can run the Docker container using the following command:
+
+    ```bash
+    docker run -e DATABASE_URL_ROOT=<your_postgres_database_url> \
+    -e PRIVATE_TOKEN_KEY=<your_private_token_key> \
+    -e JWT_REFRESH_EXPIRE=86400000 \
+    -e ACCESS_TOKEN_EXPIRATION=86400000 \
+    -e REFRESH_TOKEN_EXPIRATION=86400000 \
+    -e DEVELOPMENT_KEY=86dff15115508c9fb1da8c748740e753 \
+    -e BEARER=<bearer_name> \
+    -d -p 3000:3000 uniserver:latest
+    ```
+
+Choose the option that best fits your needs.
+
+
+## Client Setup
+
+To use unihosp, follow these steps:
+
+1. Start the client:
+    ```bash
+    cd client
+    npm install
+    npm run start
+    ```
+
+2. Open your web browser and visit `http://localhost:4200`
+
+3. If you are not on the `http://localhost:4200` update the cors settings in the `uniserver/src/main.ts `respectively and add the root api endpoint in the `client/src/app/rootEndPoint.ts`
 
 
 ### By Team - Creators
-
-#### Team Members
-1. Abhishek Mourya
-2. Aryan Karma
 
 If You See any issue with deployed app please contact us at: 
 
@@ -99,6 +222,3 @@ If You See any issue with deployed app please contact us at:
 
 
 ##### UNIHOSP - UNITED HOSPITAL
----
-##### Thank you for viewing
----
