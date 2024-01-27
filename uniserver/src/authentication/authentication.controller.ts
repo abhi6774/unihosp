@@ -124,7 +124,7 @@ export class AuthController {
   }
 
   @Post('login')
-  async login(@Body() data: { email: string; password: string }, @Res() res: Response) {
+  async login(@Body() data: { email: string; password: string }, @Res() res: Response, @Req() req: Request) {
     console.log(data);
 
     if (!/\w*@\w*.\w*/.test(data.email)) {
@@ -145,13 +145,13 @@ export class AuthController {
     res.cookie("accessToken", response.accessToken, {
       httpOnly: true,
       expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
-      secure: true,
+      secure: req.secure || req.headers["x-forwarded-proto"] === "https",
       sameSite: "strict"
     });
     res.cookie("refreshToken", response.refreshToken, {
       httpOnly: true,
       expires: new Date(Date.now() + 2000 * 60 * 60 * 24 * 7),
-      secure: true,
+      secure: req.secure || req.headers["x-forwarded-proto"] === "https",
       sameSite: "strict"
     });
     res.send({

@@ -34,7 +34,8 @@
     "cookie-parser": "^1.4.6",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.2.0",
-    "twilio": "^4.10.0"
+    "twilio": "^4.10.0",
+    "winston": "^3.11.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^9.0.0",
