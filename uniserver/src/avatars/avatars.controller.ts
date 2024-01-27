@@ -1,7 +1,7 @@
-import { Body, Controller, Get, Headers, Param, Post, Res, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, Headers, Param, Post, Req, Res, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { User } from '@prisma/client';
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import { AccessTokenGuard } from 'src/guards/accesstoken.guard';
 import { AvatarsService } from './avatars.service';
 
@@ -14,8 +14,9 @@ export class AvatarsController {
   @UseGuards(AccessTokenGuard)
   @Post()
   @UseInterceptors(FileInterceptor('file'))
-  async uploadAvatars(@Headers('user') user: User, @Body() data, @UploadedFile() file: { fieldname: string, originalname: string, encoding: string, mimetype: string, buffer: Buffer }) {
-    console.log(data);
+  async uploadAvatars(@UploadedFile() file: { fieldname: string, originalname: string, encoding: string, mimetype: string, buffer: Buffer }, @Req() request: Request) {
+    const user = request["user"];
+    console.log(user);
     const response = await this.avatarService.uploadAvatar(file.originalname, user.id, file.buffer, file.mimetype);
     return response;
   }

@@ -27,7 +27,7 @@ export class AccessTokenGuard implements CanActivate {
       const user = authorization ? this.validate(authorization) : undefined;
       this.logger.log(user)
       if (!user) return false;
-      request.body["user"] = user;
+      request["user"] = user;
       return true
     }
   }
