@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subscription, map, of } from 'rxjs';
 import { User } from '../interfaces';
+import { rootEndPoint } from '../rootEndPoint';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class UserService {
         if (user) {
           return {
             ...user,
-            avatarUrl: user.avatarUrl ? `https://api.unihosp.live/api/v1${user.avatarUrl}` : null
+            avatarUrl: user.avatarUrl ? `${rootEndPoint}${user.avatarUrl}` : null
           }
         }
         return user;

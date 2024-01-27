@@ -142,16 +142,18 @@ export class AuthController {
       });
     }
 
+    this.logger.log("Request Secure: ", req.secure, req.headers["x-forwarded-proto"] === "https");
+
     res.cookie("accessToken", response.accessToken, {
       httpOnly: true,
       expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
-      secure: req.secure || req.headers["x-forwarded-proto"] === "https",
+      secure: true,
       sameSite: "strict"
     });
     res.cookie("refreshToken", response.refreshToken, {
       httpOnly: true,
       expires: new Date(Date.now() + 2000 * 60 * 60 * 24 * 7),
-      secure: req.secure || req.headers["x-forwarded-proto"] === "https",
+      secure: true,
       sameSite: "strict"
     });
     res.send({

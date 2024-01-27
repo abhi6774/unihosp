@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Socket, io } from 'socket.io-client';
+import { notificationRootEndPoint } from '../rootEndPoint';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ export class NotificationService {
   io: Socket;
 
   constructor() {
-    this.io = io("https://api.unihosp.live/shareupdate");
+    this.io = io(`${notificationRootEndPoint}/shareupdate`);
   }
 
   listen() {

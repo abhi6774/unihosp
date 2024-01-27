@@ -136,43 +136,35 @@
   justify-content: center;
   margin-top: 2rem;
   cursor: pointer;
+
+  button {
+    font-size: 1.4vw;
+    padding: 0.5em 2.25em;
+    border-radius: 0.4rem;
+
+    &:hover {
+      transition: 350ms;
+      background-color: #045256;
+      color: white;
+      box-shadow: 0 0 20px #04525672;
+    }
+  }
 }
 
 .loginbtn {
-  font-size: larger;
-  color: white;
+  color: #045256;
   border: 0;
-  background: linear-gradient(90deg, #045256 10%, #045256 60%, #0b1516c2 100%);
-  padding: 0.6rem 2rem;
-  border-radius: 0.5rem;
-  margin-right: 1.5em;
+  background-color: transparent;
   cursor: pointer;
-}
-
-.loginbtn:hover {
-  /* opacity: 0.9; */
-  transition: 350ms;
-  background-color: #066b70;
-  box-shadow: 5px 5px 10px #066b703f;
-  /* transform: translate(-1px,-1px); */
+  border: 0.1rem solid #045256;
 }
 
 .signupbtn {
-  font-size: 1.6vw;
-  color: #0b1516c2;
+  color: white;
   border: 0;
-  padding: 0.6em 2em;
-  border-radius: 0.5rem;
-  background-color: transparent;
-  border: 0.1rem solid #0b1516c2;
-}
-
-.signupbtn:hover {
-  /* opacity: 0.7;
-  transition: 350ms; */
-  transition: 350ms;
-  box-shadow: -5px 5px 10px #066b703f;
-  /* transform: translate(1px,-1px); */
+  background: #045256;
+  margin-left: 1.5em;
+  cursor: pointer;
 }
 
 .wtnContent {
@@ -308,11 +300,11 @@ footer {
   font-family: "Segoe UI", "Open Sans", "Helvetica Neue", sans-serif;
   text-align: center;
   transition: 250ms;
+  font-weight: 400;
 }
 
 .ddark1:hover {
   color: #2f776d;
-  font-weight: 600;
   transition: 250ms;
 }
 
@@ -339,9 +331,33 @@ footer {
   transition: 250ms;
 }
 
+.aboutPara {
+  font-size: 20px;
+  text-align: justify;
+}
 
+// tablet
+@media screen and (width < 750px) and (width > 535px) {
+  .maincontent {
+    overflow: hidden;
+  }
 
+  .leftcontent img {
+    transform: translate(65px, 10px);
+    scale: 1.4;
+    opacity: .5;
+  }
 
+  .centerdiv {
+    transform: translate(32px, 10px);
+    scale: 1.35;
+  }
+
+  .aboutPara {
+    font-size: 17px;
+  }
+
+}
 
 
 // Media queries for mobile
@@ -351,9 +367,21 @@ footer {
     width: 100vw;
     margin: 5vh 5vw;
     display: flex;
+    justify-content: center;
     align-items: center;
     vertical-align: center;
-    flex-direction: column;
+    flex-direction: column-reverse;
+  }
+
+  .leftcontent {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .leftcontent img {
+    width: 85%;
+    opacity: 25%;
   }
 
   .leftcontent {
@@ -363,8 +391,13 @@ footer {
     margin-top: 40px;
   }
 
+  .centerdiv {
+    scale: 1.25;
+    position: absolute;
+    width: 55%;
+  }
+
   .rightcontent {
-    width: 75%;
     height: auto;
     margin-top: 10px;
     display: flex;
@@ -373,7 +406,7 @@ footer {
     flex-direction: column;
 
     h1 {
-      font-size: 4rem;
+      font-size: 275%;
       margin-bottom: 0.2rem;
     }
 
@@ -384,6 +417,10 @@ footer {
     h6 {
       font-size: medium;
     }
+  }
+
+  .heartbeat {
+    font-size: 5rem;
   }
 
   .loginbtn {
@@ -400,17 +437,17 @@ footer {
 
   .wtnContent p {
     text-align: justify;
-    font-size: 1rem !important;
-  }
-
-  .disNone {
-    height: 0.1rem !important;
+    font-size: .8rem !important;
   }
 
   .footercontent {
     padding: 0.5rem;
     padding-bottom: 1rem;
     font-size: 1.2rem;
+  }
+
+  .signlogbtn {
+    scale: 1.7;
   }
 }
 

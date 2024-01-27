@@ -21,6 +21,7 @@ import { ErrorComponent } from './error/error.component';
 import { CreaterpofileGuard } from './guards/createrpofile.guard';
 import { LandingPageComponent } from './landingpage/landingpage.component';
 import { PublicProfileComponent } from "./public-profile/public-profile.component";
+import { WorkInProgressComponent } from "./work-in-progress/work-in-progress.component";
 
 
 export const routes: Routes = [
@@ -47,6 +48,10 @@ export const routes: Routes = [
       { path: 'v/:id', component: OtpComponent, data: { animation: "otp" } },
       { path: 'v', redirectTo: '/auth/login' },
     ],
+  },
+  {
+    path: "work-in-progress",
+    component: WorkInProgressComponent
   },
   { path: "addDocs", component: AddDocumentsComponent },
   {
