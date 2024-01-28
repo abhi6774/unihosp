@@ -1,0 +1,18 @@
+FROM node:latest AS UniServer
+
+WORKDIR /usr/src/uniserver
+
+COPY package*.json ./
+
+RUN npm install
+
+COPY . .
+
+RUN npx nx build uniserver
+
+
+EXPOSE 3000
+
+CMD npx nx run uniserver:serve:production
+
+
