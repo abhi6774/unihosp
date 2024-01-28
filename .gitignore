@@ -14,3 +14,4 @@ client/.angular
 .DS_Store
 .env
 uniserver/.env
+LICENSE

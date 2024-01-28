@@ -20,7 +20,7 @@ export function VerifyMail(
         {
           ContentType: 'HTML',
           Charset: 'utf-8',
-          Content: readFileSync("src/authentication/mail/templates/views/verification.mail.html").toString()
+          Content: readFileSync("../authentication/mail/templates/views/verification.mail.html").toString()
         },
       ],
       Merge: {

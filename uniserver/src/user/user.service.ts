@@ -12,11 +12,14 @@ export class UserService {
     this.logger.debug('Initialized');
   }
 
-  async user(userWhereUniqueInput: Prisma.UserWhereUniqueInput, include?: { patient: boolean, }) {
+  async user(
+    userWhereUniqueInput: Prisma.UserWhereUniqueInput,
+    include?: { patient: boolean },
+  ) {
     return this.prismaService.user.findUnique({
       where: userWhereUniqueInput,
-      include
-    })
+      include,
+    });
   }
 
   async users(params: {
@@ -34,8 +37,8 @@ export class UserService {
         Avatars: true,
         History: true,
         preferences: true,
-        refreshTokens: true
-      }
+        refreshTokens: true,
+      },
     });
     return response.map((user) => excludePassword(user, ['password']));
   }
@@ -57,14 +60,16 @@ export class UserService {
 
   async removeAuthToken(refreshTokenId: string) {
     this.logger.log(refreshTokenId);
-    return this.prismaService.refreshTokens.delete({
-      where: {
-        id: refreshTokenId,
-      },
-    }).catch((err) => ({
-      reason: err,
-      statusCode: 401
-    }));
+    return this.prismaService.refreshTokens
+      .delete({
+        where: {
+          id: refreshTokenId,
+        },
+      })
+      .catch((err) => ({
+        reason: err,
+        statusCode: 401,
+      }));
   }
 
   async refreshTokens(userId: string) {
@@ -115,7 +120,7 @@ export class UserService {
     });
   }
 
-  getAndDeleteVerifyMailByEmail(email: string, contact: string) {
+  getAndDeleteVerifyMailByEmail(email: string) {
     return this.prismaService.verificationMailRequest.delete({
       where: {
         email: email,

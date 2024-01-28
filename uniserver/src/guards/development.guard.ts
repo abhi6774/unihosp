@@ -11,7 +11,6 @@ export class DevelopmentGuard implements CanActivate {
     private configService: ConfigService) { }
 
   canActivate(
-
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
     const request = context.switchToHttp().getRequest();
