@@ -11,7 +11,11 @@ import { isPlatformBrowser } from '@angular/common';
 @Component({
   selector: 'uni-abt',
   templateUrl: './about.component.html',
-  styleUrls: ['./about.component.scss'],
+  styleUrls: [
+    './about.component.scss',
+    './about.responsive.scss',
+    './about.animation.scss',
+  ],
   imports: [TopbarComponent],
   standalone: true,
 })

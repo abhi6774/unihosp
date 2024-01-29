@@ -3,7 +3,7 @@ import { Prisma, User } from '@prisma/client';
 import * as crypto from 'crypto';
 import { PrismaService } from '../database/prisma.service';
 import excludePassword from '../utils/excludePassword';
-import { UserResponse } from '@unihosp/api-interface';
+import { UserResponse, rootEndPoint } from '@unihosp/api-interface';
 
 @Injectable()
 export class UserService {
@@ -21,6 +21,9 @@ export class UserService {
       where: userWhereUniqueInput,
       include,
     });
+    if (!user) return null;
+
+    user.avatarUrl = rootEndPoint + user.avatarUrl;
     return user;
   }
 

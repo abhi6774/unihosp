@@ -14,7 +14,11 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'uni-topbar',
   templateUrl: 'topbar.component.html',
-  styleUrls: ['topbar.component.scss'],
+  styleUrls: [
+    'topbar.component.scss',
+    'topbar.responsive.scss',
+    'sidepanel.style.scss',
+  ],
   standalone: true,
   imports: [CommonModule, RouterModule, SearchbarComponent],
   animations: [

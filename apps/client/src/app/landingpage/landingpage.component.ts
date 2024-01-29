@@ -15,7 +15,7 @@ import { RouterModule } from '@angular/router';
 @Component({
   selector: 'uni-landingpage',
   templateUrl: './landingpage.component.html',
-  styleUrls: ['./landingpage.component.scss'],
+  styleUrls: ['./landingpage.component.scss', './landingpage.reponsive.scss'],
   standalone: true,
   imports: [TopbarComponent, RouterModule, CommonModule],
 })

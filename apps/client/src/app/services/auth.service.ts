@@ -61,6 +61,7 @@ export class AuthService {
         refreshTokenId: this.cookie.retrieve('rid'),
       },
     });
+    this.userService.setCurrentUser(null);
     return response;
   }
 }

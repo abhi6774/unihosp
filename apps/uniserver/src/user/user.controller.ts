@@ -30,10 +30,6 @@ export class UserController {
     );
   }
 
-  // @Get(":id")
-  // getUserById(@Res() res: Response) {
-  // }
-
   @Post('exists')
   async doesExists(@Body() data: { email?: string }) {
     const { email } = data;

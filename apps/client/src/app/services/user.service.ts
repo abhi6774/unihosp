@@ -2,21 +2,20 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subscription, map } from 'rxjs';
 
-import { UserResponse as User, UserResponse } from '@unihosp/api-interface';
+import { UserResponse as User } from '@unihosp/api-interface';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
-  private user = new BehaviorSubject<UserResponse | null>(null);
+  private user = new BehaviorSubject<User | null>(null);
 
   get currentUser() {
     return this.user.pipe(
       map((user) => {
         if (user !== null) return user;
-        let u: UserResponse;
-        const sub = this.http.get<UserResponse>('/user').subscribe((user) => {
-          user.avatarUrl = 'api/v1' + user.avatarUrl;
+        let u: User;
+        const sub = this.http.get<User>('/user').subscribe((user) => {
           u = user;
           this.setCurrentUser(user);
           sub.unsubscribe();
@@ -26,23 +25,13 @@ export class UserService {
     );
   }
 
-  setCurrentUser(user: User) {
+  setCurrentUser(user: User | null) {
     this.user.next(user);
   }
 
   subscription!: Subscription;
 
-  constructor(private http: HttpClient) {
-    // this.subscription = this.http.get<User>('/user').subscribe({
-    //   next: (user) => {
-    //     this.user.next(user);
-    //   },
-    //   error: (err) => {
-    //     console.log(err);
-    //     this.user.next(null);
-    //   },
-    // });
-  }
+  constructor(private http: HttpClient) {}
 
   refereshCurrentUser() {
     const sub = this.http.get<User>('/user').subscribe((user) => {

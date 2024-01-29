@@ -6,7 +6,12 @@ import { LoadingComponent } from '../../../loading/loading.component';
 @Component({
   selector: 'uni-apo',
   templateUrl: 'appointment.component.html',
-  styleUrls: ['appointment.component.scss', '../../common.style.scss'],
+  styleUrls: [
+    'appointment.component.scss',
+    '../../common.style.scss',
+    './appointment.responsive.scss',
+    'style-02.scss',
+  ],
   standalone: true,
   imports: [CommonModule, LoadingComponent],
 })
