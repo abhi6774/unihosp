@@ -4,8 +4,8 @@ import { Router } from '@angular/router';
 import { Observable, map, tap } from 'rxjs';
 import UniCookieService from './unicookie.service';
 import { UserService } from './user.service';
-import { UserResponse } from '@unihosp/api-interface';
-import { LoginResponse, LogoutResponse } from '../auth/interfaces';
+import { LogoutResponse, UserResponse } from '@unihosp/api-interface';
+import { LoginResponse } from '../auth/interfaces';
 
 @Injectable({
   providedIn: 'root',
@@ -56,17 +56,11 @@ export class AuthService {
   }
 
   logout() {
-    const reponse = this.http.delete<LogoutResponse>(`/auth/logout`, {
+    const response = this.http.delete<LogoutResponse>(`/auth/logout`, {
       body: {
         refreshTokenId: this.cookie.retrieve('rid'),
       },
     });
-
-    return reponse.pipe(
-      map((value) => {
-        this.cookie.deleteAllCookie();
-        return value;
-      })
-    );
+    return response;
   }
 }

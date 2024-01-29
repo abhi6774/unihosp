@@ -1,7 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, map } from 'rxjs';
-import { BloodGroupType, Patient } from '../interfaces';
+import { BloodGroupType } from '../interfaces';
+import { Appointments, Patient } from '@prisma/client';
+import { UserProfileResponse } from '@unihosp/api-interface';
 
 @Injectable({
   providedIn: 'root',
@@ -9,7 +11,9 @@ import { BloodGroupType, Patient } from '../interfaces';
 export class ProfileService {
   constructor(private http: HttpClient) {}
 
-  private currentProfile = new BehaviorSubject<Patient | null>(null);
+  private currentProfile = new BehaviorSubject<
+    (Patient & { appointments: Appointments[] }) | null
+  >(null);
 
   get current() {
     return this.currentProfile.pipe(
@@ -17,7 +21,7 @@ export class ProfileService {
         if (patient !== null) return patient;
         let p: Patient;
         const sub = this.http
-          .get<Patient>('/patient/user')
+          .get<UserProfileResponse>('/patient/user')
           .subscribe((patient) => {
             p = patient;
             this.profile = patient;
@@ -28,7 +32,7 @@ export class ProfileService {
     );
   }
 
-  set profile(profile: Patient) {
+  set profile(profile: UserProfileResponse) {
     this.currentProfile.next(profile);
   }
 
@@ -55,17 +59,19 @@ export class ProfileService {
     handle?: string;
     bloodGroup: BloodGroupType;
   }) {
-    const patient = this.http.post<Patient>(`/patient`, {
-      fName,
-      lName,
-      dateOfBirth,
-      handle,
-      bloodGroup,
-    });
-
-    patient.subscribe((patient) => {
-      this.currentProfile.next(patient);
-    });
+    const patient = this.http
+      .post<UserProfileResponse>(`/patient`, {
+        fName,
+        lName,
+        dateOfBirth,
+        handle,
+        bloodGroup,
+      })
+      .pipe(
+        map((patient) => {
+          this.currentProfile.next(patient);
+        })
+      );
     return patient;
   }
 }

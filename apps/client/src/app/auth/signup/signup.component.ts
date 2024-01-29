@@ -6,7 +6,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { PassInputField } from '../interfaces/passInputField';
 import { LoadingComponent } from '../../loading/loading.component';
@@ -17,7 +17,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './signup.component.html',
   standalone: true,
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  imports: [ReactiveFormsModule, LoadingComponent, CommonModule],
+  imports: [ReactiveFormsModule, LoadingComponent, CommonModule, RouterModule],
   styleUrls: [
     './signup.component.scss',
     '../common-styles/common.css',

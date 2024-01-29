@@ -8,15 +8,16 @@ import {
 import { UserService } from '../services/user.service';
 import { Observable, Subscription } from 'rxjs';
 import { TopbarComponent } from '../components/topbar/topbar.component';
-import { isPlatformBrowser } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { UserResponse } from '@unihosp/api-interface';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'uni-landingpage',
   templateUrl: './landingpage.component.html',
   styleUrls: ['./landingpage.component.scss'],
   standalone: true,
-  imports: [TopbarComponent],
+  imports: [TopbarComponent, RouterModule, CommonModule],
 })
 export class LandingPageComponent implements OnInit, OnDestroy {
   constructor(private userService: UserService) {}

@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { CUSTOM_ELEMENTS_SCHEMA, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { LoadingComponent } from '../../loading/loading.component';
 
 @Component({
@@ -14,7 +14,7 @@ import { LoadingComponent } from '../../loading/loading.component';
     '../common-styles/password-field.component.scss',
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  imports: [ReactiveFormsModule, LoadingComponent, CommonModule],
+  imports: [ReactiveFormsModule, LoadingComponent, CommonModule, RouterModule],
 })
 export class ForgotComponent implements OnInit {
   formGroup!: FormGroup;

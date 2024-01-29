@@ -3,7 +3,7 @@ import { Prisma, User } from '@prisma/client';
 import * as crypto from 'crypto';
 import { PrismaService } from '../database/prisma.service';
 import excludePassword from '../utils/excludePassword';
-
+import { UserResponse } from '@unihosp/api-interface';
 
 @Injectable()
 export class UserService {
@@ -13,11 +13,14 @@ export class UserService {
     this.logger.debug('Initialized');
   }
 
-  async user(userWhereUniqueInput: Prisma.UserWhereUniqueInput, include?: { patient: boolean, }) {
+  async user(
+    userWhereUniqueInput: Prisma.UserWhereUniqueInput,
+    include?: { patient: boolean }
+  ) {
     return this.prismaService.user.findUnique({
       where: userWhereUniqueInput,
-      include
-    })
+      include,
+    });
   }
 
   async users(params: {
@@ -26,7 +29,7 @@ export class UserService {
     cursor?: Prisma.UserWhereUniqueInput;
     where?: Prisma.UserWhereInput;
     orderBy?: Prisma.UserOrderByWithRelationInput;
-  }) {
+  }): Promise<UserResponse[]> {
     const response = await this.prismaService.user.findMany({
       ...params,
       include: {
@@ -35,8 +38,8 @@ export class UserService {
         Avatars: true,
         History: true,
         preferences: true,
-        refreshTokens: true
-      }
+        refreshTokens: true,
+      },
     });
     return response.map((user) => excludePassword(user, ['password']));
   }
@@ -58,14 +61,16 @@ export class UserService {
 
   async removeAuthToken(refreshTokenId: string) {
     this.logger.log(refreshTokenId);
-    return this.prismaService.refreshTokens.delete({
-      where: {
-        id: refreshTokenId,
-      },
-    }).catch((err) => ({
-      reason: err,
-      statusCode: 401
-    }));
+    return this.prismaService.refreshTokens
+      .delete({
+        where: {
+          id: refreshTokenId,
+        },
+      })
+      .catch((err) => ({
+        reason: err,
+        statusCode: 401,
+      }));
   }
 
   async refreshTokens(userId: string) {

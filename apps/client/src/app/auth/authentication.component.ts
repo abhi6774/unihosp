@@ -12,7 +12,6 @@ import { RouterModule, RouterOutlet } from '@angular/router';
 import { LoadingComponent } from '../loading/loading.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { UniDirectivesModule } from '../directives/unidirectives.module';
 import { ValidatorsModule } from '../Validators/validators.module';
 
@@ -71,7 +70,6 @@ import { ValidatorsModule } from '../Validators/validators.module';
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
-    BrowserAnimationsModule,
     UniDirectivesModule,
     ValidatorsModule,
     RouterModule,

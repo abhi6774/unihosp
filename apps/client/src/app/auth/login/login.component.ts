@@ -5,7 +5,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { FieldType, HUIcon } from '../interfaces';
 import { CommonModule } from '@angular/common';
@@ -21,7 +21,7 @@ import { LoadingComponent } from '../../loading/loading.component';
   ],
   standalone: true,
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  imports: [ReactiveFormsModule, LoadingComponent, CommonModule],
+  imports: [ReactiveFormsModule, LoadingComponent, CommonModule, RouterModule],
 })
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup;

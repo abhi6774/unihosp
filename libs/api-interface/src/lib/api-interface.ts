@@ -1,4 +1,5 @@
-import {} from '@unihosp/utils';
-import { User } from '@prisma/client';
+import { Appointments, Patient, User } from '@prisma/client';
 
 export type UserResponse = Omit<User, 'password'>;
+
+export type UserProfileResponse = Patient & { appointments: Appointments[] };

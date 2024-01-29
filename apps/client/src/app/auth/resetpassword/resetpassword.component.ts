@@ -8,6 +8,7 @@ import {
 import { FieldType, HUIcon } from '../interfaces';
 import { CommonModule } from '@angular/common';
 import { LoadingComponent } from '../../loading/loading.component';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'uni-rsp',
@@ -19,7 +20,7 @@ import { LoadingComponent } from '../../loading/loading.component';
     '../common-styles/password-field.component.scss',
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  imports: [ReactiveFormsModule, LoadingComponent, CommonModule],
+  imports: [ReactiveFormsModule, LoadingComponent, CommonModule, RouterModule],
 })
 export class ResetPasswordComponent implements OnInit {
   passInputFields: {

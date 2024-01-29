@@ -184,9 +184,40 @@ export class AuthController {
   }
 
   @Delete('logout')
-  deleteRefreshToken(@Body('refreshTokenId') refreshTokenId: string) {
-    console.log(refreshTokenId);
-    return this.authService.deleteRefreshToken(refreshTokenId);
+  async asdeleteRefreshToken(@Req() req: Request, @Res() res: Response) {
+    this.logger.log("Deleting User's Refresh Token");
+    try {
+      const refreshTokenId = req.cookies['refreshToken'];
+      res.cookie('accessToken', '', {
+        httpOnly: true,
+        expires: new Date(Date.now()),
+        secure: true,
+        sameSite: 'strict',
+      });
+
+      res.cookie('refreshToken', '', {
+        httpOnly: true,
+        expires: new Date(Date.now()),
+        secure: true,
+        sameSite: 'strict',
+      });
+      console.log(refreshTokenId);
+
+      const result = await this.authService.deleteRefreshToken(refreshTokenId);
+      console.log(result);
+      if (result) {
+        return res.send({
+          message: 'Logout Successful',
+          success: true,
+        });
+      }
+      throw new Error('Logout Failed');
+    } catch (err) {
+      return res.send({
+        message: err.message,
+        success: false,
+      });
+    }
   }
 
   // @Post('msg')

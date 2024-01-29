@@ -9,6 +9,14 @@ import { LoginComponent } from './auth/login/login.component';
 import { ResetPasswordComponent } from './auth/resetpassword/resetpassword.component';
 import { ForgotComponent } from './auth/forgot/forgot.component';
 import { OtpComponent } from './auth/otp/otp.component';
+import { CreateprofileComponent } from './createprofile/createprofile.component';
+import { AddDocumentsComponent } from './components/add-documents/add-documents.component';
+import { HospitalComponent } from './dashboard/pages/hospital/hospital.component';
+import { DocumentComponent } from './dashboard/pages/document/document.component';
+import { AppointmentComponent } from './dashboard/pages/appointment/appointment.component';
+import { ProfileComponent } from './dashboard/pages/profile/profile.component';
+import { HomeComponent } from './dashboard/pages/home/home.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 export const appRoutes: Route[] = [
   { path: '', pathMatch: 'full', component: LandingPageComponent },
@@ -41,6 +49,27 @@ export const appRoutes: Route[] = [
       },
       { path: 'v/:id', component: OtpComponent, data: { animation: 'otp' } },
       { path: 'v', redirectTo: '/auth/login' },
+    ],
+  },
+  {
+    path: 'createprofile',
+    component: CreateprofileComponent,
+    canActivate: [LoggedInGuard],
+  },
+  {
+    path: 'dashboard',
+    canActivate: [],
+    canActivateChild: [],
+    component: DashboardComponent,
+    children: [
+      { path: '', redirectTo: 'welcome', pathMatch: 'full' },
+      { path: 'welcome', component: HomeComponent },
+      { path: 'profile', component: ProfileComponent },
+      { path: 'hospital', component: HospitalComponent },
+      { path: 'appointments', component: AppointmentComponent },
+      { path: 'history', component: DocumentComponent },
+      { path: 'hospitals', component: HospitalComponent },
+      { path: 'record/addDocs', component: AddDocumentsComponent },
     ],
   },
   {

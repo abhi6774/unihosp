@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { CUSTOM_ELEMENTS_SCHEMA, Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { LoadingComponent } from '../../loading/loading.component';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'uni-otp',
@@ -13,7 +14,7 @@ import { LoadingComponent } from '../../loading/loading.component';
   ],
   standalone: true,
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  imports: [ReactiveFormsModule, LoadingComponent, CommonModule],
+  imports: [ReactiveFormsModule, LoadingComponent, CommonModule, RouterModule],
 })
 export class OtpComponent {
   formGroup!: FormGroup;
