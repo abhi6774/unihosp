@@ -1,8 +1,17 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  Inject,
+  OnInit,
+  PLATFORM_ID,
+  ViewChild,
+} from '@angular/core';
 import { ProfileService } from '../../../services/profile.service';
 import { UserService } from '../../../services/user.service';
 import { LoadingComponent } from '../../../loading/loading.component';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { Observable } from 'rxjs';
+import { UserProfileResponse, UserResponse } from '@unihosp/api-interface';
 
 @Component({
   selector: 'uni-profile',
@@ -18,12 +27,14 @@ import { CommonModule } from '@angular/common';
 export class ProfileComponent implements OnInit {
   constructor(
     private profileService: ProfileService,
-    private userService: UserService
+    private userService: UserService,
+    @Inject(PLATFORM_ID) private platoformId: object
   ) {}
   @ViewChild('file') file!: ElementRef<HTMLInputElement>;
 
-  paitentProfile$ = this.profileService.current;
-  userService$ = this.userService.currentUser;
+  userProfile$!: Observable<UserResponse | null>;
+
+  paitentProfile$!: Observable<UserProfileResponse>;
 
   loading = false;
 
@@ -51,8 +62,9 @@ export class ProfileComponent implements OnInit {
 
   // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnInit() {
-    // this.paitentProfile$.subscribe((patient) => {
-    // console.log(patient);
-    // });
+    if (isPlatformBrowser(this.platoformId)) {
+      this.paitentProfile$ = this.profileService.current;
+      this.userProfile$ = this.userService.currentUser;
+    }
   }
 }

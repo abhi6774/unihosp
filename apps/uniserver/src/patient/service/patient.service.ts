@@ -1,6 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from '../../database/prisma.service';
+import { UserProfileResponse } from '@unihosp/api-interface';
 
 // enum BloodGroupType {
 //   'A+',
@@ -87,22 +88,27 @@ export class PatientService {
     };
   }
 
-  findPatientProfile(data: { id?: string; handle?: string; userId?: string }) {
-    const include = {
-      owner: false,
-      allowedDoctors: true,
-      allowedHospitals: true,
-    };
-
-    this.logger.debug('Patient ID: ' + data.id);
-    return this.prismaService.patient.findUnique({
+  async findPatientProfile(data: {
+    id?: string;
+    handle?: string;
+    userId?: string;
+  }): Promise<UserProfileResponse | null> {
+    this.logger.debug('Patient ID: ' + JSON.stringify(data));
+    const profile = await this.prismaService.patient.findUnique({
       where: {
         id: data.id,
         handle: data.handle,
         userId: data.userId,
       },
-      include: { ...include, Appointments: true },
+      include: {
+        allowedDoctors: true,
+        allowedHospitals: true,
+        owner: false,
+        Appointments: true,
+      },
     });
+    if (!profile) return null;
+    return profile as UserProfileResponse;
   }
 
   findPatientProfiles(data: { handle?: string }) {

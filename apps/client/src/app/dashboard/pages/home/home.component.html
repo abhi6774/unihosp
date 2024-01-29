@@ -20,9 +20,9 @@
         <li *ngFor="let appointment of lastTwoAppointments$ | async">
           <a routerLink="/dashboard/appointments">
             <div class="apt">
-              <div class="usr-icon" *ngIf="appointment.userIcon">
+              <!-- <div class="usr-icon" *ngIf="appointment.userIcon">
                 <img [src]="appointment.userIcon" />
-              </div>
+              </div> -->
               <div class="dtls">
                 <h3>{{ appointment.doctorId }}</h3>
                 <p>

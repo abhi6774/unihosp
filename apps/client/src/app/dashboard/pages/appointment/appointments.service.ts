@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { Appointments } from '../../../interfaces';
 import { ProfileService } from '../../../services/profile.service';
+import { Appointments } from '@prisma/client';
 
 @Injectable({
   providedIn: 'root',

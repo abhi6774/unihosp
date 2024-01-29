@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, map } from 'rxjs';
 import { BloodGroupType } from '../interfaces';
-import { Appointments, Patient } from '@prisma/client';
 import { UserProfileResponse } from '@unihosp/api-interface';
 
 @Injectable({
@@ -11,15 +10,15 @@ import { UserProfileResponse } from '@unihosp/api-interface';
 export class ProfileService {
   constructor(private http: HttpClient) {}
 
-  private currentProfile = new BehaviorSubject<
-    (Patient & { appointments: Appointments[] }) | null
-  >(null);
+  private currentProfile = new BehaviorSubject<UserProfileResponse | null>(
+    null
+  );
 
   get current() {
     return this.currentProfile.pipe(
       map((patient) => {
         if (patient !== null) return patient;
-        let p: Patient;
+        let p: UserProfileResponse;
         const sub = this.http
           .get<UserProfileResponse>('/patient/user')
           .subscribe((patient) => {

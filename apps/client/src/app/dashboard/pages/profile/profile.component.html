@@ -3,7 +3,7 @@
   <uni-loading *ngIf="!patient || loading"></uni-loading>
   <div>
     <div class="userimage editable">
-      <label style="width: 100%; height: 100%;" *ngIf="userService$ | async as user">
+      <label style="width: 100%; height: 100%;" *ngIf="userProfile$ | async as user">
         <div title="Upload Profile Photo" class="av_img" *ngIf="user.avatarUrl"
           style="background-image: url({{user.avatarUrl}});">
         </div>
@@ -45,13 +45,13 @@
           <span>{{patient.bloodGroup}}</span>
         </div>
       </div>
-      <div class="det-con" *ngIf="userService$ | async as user">
+      <div class="det-con" *ngIf="userProfile$ | async as user">
         <div class="det">
           <h2>Email: </h2>
           <span>{{user.email}}</span>
         </div>
       </div>
-      <div class="det-con" *ngIf="userService$ | async as user">
+      <div class="det-con" *ngIf="userProfile$ | async as user">
         <div class="det">
           <h2>Mobile: </h2>
           <span>{{user.contact}}</span>
