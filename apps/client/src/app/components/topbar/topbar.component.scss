@@ -73,6 +73,9 @@ uni-searchbar {
     cursor: pointer;
   }
 }
+.darkcontainer:nth-child(3){
+  display: none;
+}
 .ddark0 {
   color: var(--logo-color-2);
   font-size: 1.3rem;

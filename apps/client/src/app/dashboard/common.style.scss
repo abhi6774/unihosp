@@ -5,12 +5,14 @@
   color: #333 !important;
   background-color: var(--background-1);
   border: 3px solid transparent;
-  border-radius: 1.5rem;
+  border-radius: 1rem;
   display: flex;
   flex-wrap: wrap;
   align-items: flex-start;
   justify-content: space-evenly;
-  gap: 16px;
+  // gap: 16px;
+  height: fit-content;
+  min-height: 100%;
   padding: 20px;
   position: relative;
 

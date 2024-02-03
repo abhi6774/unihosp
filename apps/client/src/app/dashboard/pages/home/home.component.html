@@ -2,9 +2,9 @@
   <!-- <div class="content"> -->
   <div>
     <div class="userimage" *ngIf="userService$ | async as user">
-      <div class="av_img" *ngIf="user.avatarUrl" style="background-image: url({{user.avatarUrl}});">
+      <div loading="lazy" class="av_img" *ngIf="user.avatarUrl" style="background-image: url({{user.avatarUrl}});">
       </div>
-      <div class="av_img" *ngIf="!user.avatarUrl" style="background-image: url('/assets/profile.png');">
+      <div loading="lazy" class="av_img" *ngIf="!user.avatarUrl" style="background-image: url('/assets/profile.png');">
       </div>
     </div>
     <h1>Welcome, {{ patient.fName }}</h1>
