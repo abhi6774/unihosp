@@ -1,26 +1,14 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
-import { $Enums, Prisma, User } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 import { createHash } from 'crypto';
 
 import { MailService } from '../mail/mail.service';
 import { UserService } from '../../user/user.service';
 import excludePassword from '../../utils/excludePassword';
 import { TokenType } from '../../interfaces';
-
-interface LoginResponse {
-  accessToken: string;
-  refreshToken: string;
-  refreshTokenId: string;
-  user: Omit<User, 'password'>;
-}
-
-type GenerateTokenDetails = {
-  id: string;
-  email: string;
-  role: $Enums.Role;
-};
+import { AccessTokenData, LoginResult } from '@unihosp/api-interface';
 
 @Injectable({})
 export class AuthService {
@@ -36,7 +24,7 @@ export class AuthService {
   async login(authData: {
     email: string;
     password: string;
-  }): Promise<LoginResponse | null> {
+  }): Promise<LoginResult | null> {
     const user = await this.userService.user({ email: authData.email });
     this.logger.log(JSON.stringify(user));
     authData.password = this.hash(authData.password);
@@ -51,7 +39,7 @@ export class AuthService {
 
     this.logger.log(JSON.stringify(userDetailsWithoutPassword));
 
-    const detailsToCreateToken = {
+    const detailsToCreateToken: AccessTokenData = {
       id: userDetailsWithoutPassword.id,
       email: userDetailsWithoutPassword.email,
       role: userDetailsWithoutPassword.role,
@@ -110,7 +98,7 @@ export class AuthService {
   }
 
   private generateToken(
-    user: GenerateTokenDetails,
+    user: AccessTokenData,
     tokenType: TokenType = TokenType.AccessToken
   ) {
     this.logger.debug(
@@ -155,22 +143,22 @@ export class AuthService {
         signUpData.contact
       );
 
-      // const response = await this.mailService.sendMail(
-      //   signUpData.email,
-      //   signUpData.email,
-      //   id.uri,
-      //   id.code,
-      // );
-      //
-      // if (signUpData.contact) {
-      // const message = await this.msgService.sendMessage(
-      //   signUpData.contact,
-      //   id.code,
-      // );
-      // this.logger.debug(`MessageSent: ${JSON.stringify(message)}`);
-      // }
+      /*      const response = await this.mailService.sendMail(
+        signUpData.email,
+        signUpData.email,
+        id.uri,
+        id.code
+      );
 
-      // this.logger.debug(`MailSent: ${JSON.stringify(response)}`);
+      if (signUpData.contact) {
+        const message = await this.msgService.sendMessage(
+          signUpData.contact,
+          id.code
+        );
+        this.logger.debug(`MessageSent: ${JSON.stringify(message)}`);
+      }
+
+      this.logger.debug(`MailSent: ${JSON.stringify(response)}`); */
 
       signUpData.password = this.hash(signUpData.password);
       const user = await this.userService.createUser(signUpData);
@@ -188,7 +176,7 @@ export class AuthService {
     return createHash('sha256').update(input).digest().toString('hex');
   }
 
-  verify(authorization: string): { user: User } {
+  verify(authorization: string): { user: AccessTokenData } {
     const accessToken = this.splitAuthToken(authorization);
     try {
       const result = this.jwtService.verify(accessToken);
