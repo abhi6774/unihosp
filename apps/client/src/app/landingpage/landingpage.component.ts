@@ -30,11 +30,10 @@ export class LandingPageComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
       this.user$ = this.userService.currentUser;
-      this.subscription = this.user$.subscribe(console.log);
     }
   }
 
   ngOnDestroy(): void {
-    if (this.subscription) this.subscription.unsubscribe();
+    console.log('Destroying Landing Page');
   }
 }

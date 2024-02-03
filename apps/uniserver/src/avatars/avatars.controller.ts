@@ -28,7 +28,7 @@ export class AvatarsController {
   @UseInterceptors(FileInterceptor('file'))
   async uploadAvatars(
     @Headers('user') user: User,
-    @Body() data: { user: string },
+    @Body() data: { user: { id: string } },
     @UploadedFile()
     file: {
       fieldname: string;
@@ -38,7 +38,7 @@ export class AvatarsController {
       buffer: Buffer;
     }
   ) {
-    console.log(data);
+    console.log(user);
     const response = await this.avatarService.uploadAvatar(
       file.originalname,
       user.id,
