@@ -80,75 +80,24 @@
       grid-template-columns: 1fr;
     }
   }
+  .container{
+    width: 95%;
+  }
+  .hosInfo{
+    width: 100%;
+  }
+  .hosInfo img {
+    height: 6rem;
+    width: 6rem;
+    margin: 0 auto;
+    border: 1px solid #2f776d;
+    border-radius: 0.75rem;  
+  }
+  
 }
 
 @media screen and (width < 535px){
-  .lessmargin{
-    margin-bottom: 1rem !important;
-  }
-  h1{
-    font-size: 1.3rem;
-  }
-  .content {
-    width: 100vw;
-    & > div:nth-child(2) {
-      grid-auto-rows:auto;
-    }
-  }
-  #map{
-    margin: 2.5rem auto;
-  }
-  .hosInfo{
-    margin: 1.5rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    h3{
-      font-size:1.2rem;
-    }
-  }
   .hosDetail{
-    margin: 0;
-    h3{
-      text-align: center;
-      margin-top:1rem;
-    }p{
-      text-align:center;
-    } 
-  }
-  .visited{
-    margin-left:0;
-    font-size:0.8rem;
-  }
-}
-
-// different size media queries for map (it needs fix size to render images)
-
-@media screen and (width < 535px) {
-  #map {
-    width: 480px;
-    height: 480px;
-  }
-}
-
-@media screen and (width < 480px){
-  #map {
-    width: 450px;
-    height: 450px;
-  }
-}
-
-@media screen and (width < 430px){
-  #map {
-    width: 400px;
-    height: 400px;
-  }
-}
-
-@media screen and (width < 400px){
-  #map {
-    width: 360px;
-    height: 360px;
+    margin-left: .75rem;
   }
 }
