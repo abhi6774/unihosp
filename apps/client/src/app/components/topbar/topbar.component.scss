@@ -28,6 +28,7 @@
 .navright {
   display: flex;
   gap: 10px;
+  width: 175px;
 }
 
 uni-searchbar {
@@ -53,6 +54,10 @@ uni-searchbar {
   border-radius: 2.5rem;
   transition: 250ms;
   position: relative;
+}
+
+.darkcontainer:nth-child(1){
+  margin-left: auto;
 }
 
 .ddark1{

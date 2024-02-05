@@ -1,6 +1,10 @@
 <div class="content" *ngIf="paitentProfile$|async as patient">
   <!-- <div class="content"> -->
-  <div class="tp-usr-dtls">
+  <div class="tp-usr-dtls"> 
+    <div class="userimage" *ngIf="userService$ | async as user">
+      <div class="av_img" *ngIf="user.avatarUrl" style="background-image: url({{user.avatarUrl}});"></div>
+      <div class="av_img" *ngIf="!user.avatarUrl" style="background-image: url('/assets/profile.png');"></div>
+    </div>
     <h1>Past Medical Record, {{patient.fName}}</h1>
     <p id="p" class="fontSize">
       This dashboard is wholeheartedly designed to manage almost everything about

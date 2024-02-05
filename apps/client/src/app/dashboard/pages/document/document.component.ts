@@ -2,11 +2,12 @@ import { Component } from '@angular/core';
 import { ProfileService } from '../../../services/profile.service';
 import { LoadingComponent } from '../../../loading/loading.component';
 import { CommonModule } from '@angular/common';
+import { UserService } from '../../../services/user.service';
 
 interface IMedicalRecords {
   title: string;
   description: string;
-  createdAt: Date;
+  createdAt: Date; 
   updatedAt: Date;
 }
 @Component({
@@ -18,6 +19,7 @@ interface IMedicalRecords {
 })
 export class DocumentComponent {
   paitentProfile$ = this.profileService.current;
+  userService$ = this.userService.currentUser;
 
   readonly maxLetter = 400;
 
@@ -45,5 +47,8 @@ export class DocumentComponent {
     },
   ];
 
-  constructor(private profileService: ProfileService) {}
+  constructor(
+    private profileService: ProfileService,
+    private userService: UserService
+    ){}
 }
