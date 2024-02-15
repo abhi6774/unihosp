@@ -1,4 +1,4 @@
-## Check Live Deployement - <a href="https://unihosp.live" target="_blank">Unihosp.live</a>
+## Check Live Deployment - <a href="https://unihosp.live" target="_blank">Unihosp.live</a>
 
 # UniHosp - United Hospital
 
