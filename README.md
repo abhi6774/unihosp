@@ -40,11 +40,11 @@ client consists of our app frontend design and app flow logic
 
 It's not fully completed yet so we have deployed a development build right some features might break.
 
-![](https://github.com/glxymesh/unihosp/blob/main/source/registerpage.png)
+![](https://github.com/abhi6774/unihosp/blob/main/source/registerpage.png)
 
 ##### Dashboard
 
-![](https://github.com/glxymesh/unihosp/blob/main/source/welcome.png)
+![](https://github.com/abhi6774/unihosp/blob/main/source/welcome.png)
 
 Note:
 We are trying to hide as much as secret keys and token as we can so please be carefull if you are trying to exploit.
