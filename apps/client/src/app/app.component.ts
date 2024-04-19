@@ -1,5 +1,4 @@
 import { isPlatformBrowser } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
 import {
   CUSTOM_ELEMENTS_SCHEMA,
   Component,
@@ -8,6 +7,7 @@ import {
   inject,
 } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { UserService } from './services/user.service';
 
 @Component({
   standalone: true,
@@ -21,13 +21,19 @@ import { RouterModule } from '@angular/router';
 export class AppComponent implements OnInit {
   title: string = 'Unihosp';
 
-  constructor(private http: HttpClient) {}
+  constructor(private userService: UserService) {}
 
   platformId = inject(PLATFORM_ID);
 
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
-      this.http.get('/user').subscribe(console.log);
+      // this.subscription = this.http.get('/user').pipe(catchError(() => {
+      //   return of(null);
+      // })).subscribe((user) => {
+      //   console.log(user);
+      //   this.subscription.unsubscribe();
+      // });
+      this.userService.refereshCurrentUser();
     }
   }
 }

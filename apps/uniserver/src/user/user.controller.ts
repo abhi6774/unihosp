@@ -18,8 +18,9 @@ export class UserController {
 
   @Get()
   @UseGuards(AccessTokenGuard)
-  getCurrentUser(@Req() req: Request) {
-    const user: User = req.body['user'];
+  getCurrentUser(@Req() req: Request & { user: User }) {
+    const user: User = req['user'] as User;
+    console.log(user);
     return this.userService.user(
       {
         id: user.id,

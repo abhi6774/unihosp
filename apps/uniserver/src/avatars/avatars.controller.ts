@@ -2,10 +2,10 @@ import {
   Body,
   Controller,
   Get,
-  Headers,
   Logger,
   Param,
   Post,
+  Req,
   Res,
   UploadedFile,
   UseGuards,
@@ -27,7 +27,7 @@ export class AvatarsController {
   @Post()
   @UseInterceptors(FileInterceptor('file'))
   async uploadAvatars(
-    @Headers('user') user: User,
+    @Req() req: Request & { user: User },
     @Body() data: { user: { id: string } },
     @UploadedFile()
     file: {
@@ -38,7 +38,7 @@ export class AvatarsController {
       buffer: Buffer;
     }
   ) {
-    console.log(user);
+    const user  = req.user;
     const response = await this.avatarService.uploadAvatar(
       file.originalname,
       user.id,

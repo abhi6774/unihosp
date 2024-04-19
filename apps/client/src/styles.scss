@@ -64,7 +64,7 @@
 
 body {
   background-color: var(--primary-color);
-  overflow: hidden;
+  // overflow: hidden;
   &::-webkit-scrollbar{
     width: 1px;
   }

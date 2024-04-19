@@ -64,9 +64,10 @@ export class CreateprofileComponent implements OnInit, OnDestroy {
       bloodGroup: ['', Validators.maxLength(2)],
     });
 
-    this.subscription = this.createProfileForm.valueChanges.subscribe(() =>
+    this.subscription = this.createProfileForm.valueChanges.subscribe(() =>{
+      console.log(this.createProfileForm)
       console.log(this.createProfileForm.valid)
-    );
+    });
   }
 
   ngOnDestroy(): void {

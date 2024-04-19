@@ -1,11 +1,16 @@
 <div class="content" *ngIf="paitentProfile$ | async as patient">
-  <!-- <div class="content"> -->
   <div>
     <div class="userimage" *ngIf="userService$ | async as user">
-      <div loading="lazy" class="av_img" *ngIf="user.avatarUrl" style="background-image: url({{user.avatarUrl}});">
-      </div>
-      <div loading="lazy" class="av_img" *ngIf="!user.avatarUrl" style="background-image: url('/assets/profile.png');">
-      </div>
+      @if (user.avatarUrl) {
+        <div loading="lazy" title="Upload Profile Photo" class="av_img">
+          <img [src]="user.avatarUrl" alt="profile image" />
+        </div>
+      }
+      @else {
+        <div class="av_img">
+          <img loading="lazy" src="/assets/profile.png" alt="profile image" />
+        </div>
+      }
     </div>
     <h1>Welcome, {{ patient.fName }}</h1>
     <p class="fontSize">

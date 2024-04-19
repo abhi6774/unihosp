@@ -12,7 +12,6 @@ import { LoadingComponent } from '../../../loading/loading.component';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Observable } from 'rxjs';
 import { UserProfileResponse, UserResponse } from '@unihosp/api-interface';
-
 @Component({
   selector: 'uni-profile',
   templateUrl: 'profile.component.html',
@@ -60,7 +59,6 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnInit() {
     if (isPlatformBrowser(this.platoformId)) {
       this.paitentProfile$ = this.profileService.current;
